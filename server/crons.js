@@ -3,6 +3,7 @@ SyncedCron.add({
     schedule: function (parser) {
         // parser is a later.parse object
         return parser.text('every 30 seconds');
+
     },
     job: function () {
         _.each(ICOTokens.find({verified: true, explorersuccess: {$ne: true}}).fetch(), function (e) {
@@ -10,7 +11,7 @@ SyncedCron.add({
             Fiber(function () {
                 console.log('sending ping to explorer for ', e._id);
                 sleep(3000);
-                Meteor.call('pingExplorer', e._id, 'testnet', function (err, resp) {
+                Meteor.call('pingExplorer', e._id, function (err, resp) {
                     var thestatus = resp.content.split('<dd>')[1].split('</dd>')[0];
 
                     console.log('the status', thestatus)

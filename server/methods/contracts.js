@@ -2,7 +2,7 @@ Meteor.methods({
 
     'contract': function (contractAddress, network) {
         var Web3 = require('web3');
-        var web3 = new Web3(new Web3.providers.HttpProvider(ToolConfig.findOne(network).blockchainRPCUrl));
+        var web3 = new Web3(new Web3.providers.HttpProvider(Meteor.settings.public.rpc[network]));
         var contractObj = ICOTokens.findOne(contractAddress);
 
         match = false;
@@ -164,8 +164,7 @@ Meteor.methods({
         console.log('decrypted', decrypted);
 
     },
-    'pingExplorer': function (contractAddress, theNet) {
-        var ipAdd = ToolConfig.findOne({'_id': theNet}).explorerApiUrl;
+    'pingExplorer': function (contractAddress) {
         var theUrl = ICOTokens.findOne(contractAddress).verifyUrl;
         return HTTP.get(theUrl);
     }
