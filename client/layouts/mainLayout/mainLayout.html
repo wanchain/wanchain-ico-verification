@@ -1,0 +1,8 @@
+<template name="mainLayout">
+    {{>header}}
+    {{#if currentUser}}
+        {{> Template.dynamic template=content}}
+    {{else}}
+        {{>atForm}}
+    {{/if}}
+</template>

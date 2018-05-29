@@ -1,0 +1,83 @@
+<template name="header">
+    {{#if currentUser}}
+
+        <div class="networks">
+            <div class="container">
+                <div class="row">
+
+                    <div class="col-sm-2 text-left nety">
+                        <div><i class="fa fa-circle text-success"></i> {{network}}</div>
+
+                    </div>
+                    <div class="col-sm-2 text-left">
+                        {{#if currentUser}}    {{>networkSwitch}}{{/if}}
+                    </div>
+
+                    <div class="col-sm-8 text-right">
+                        {{#if currentUser}}
+                            <a href="/" class="btn btn-xs btn-dark"><i class="fa fa-home"></i> Home</a>
+                        {{#if currentUser.profile.admin}}
+                            <a href="/p/config"  class="btn btn-xs btn-dark"><i class="fa fa-cog"></i> Admin</a>
+                        {{/if}}
+                            <a href="#" onclick="Meteor.logout()" class="btn btn-xs btn-dark"><i class="fa fa-user"></i> Logout</a>
+                        {{/if}}
+                        <!--<div class="network">-->
+                        <!---->
+                        <!--</div>-->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    {{/if}}
+    <div class="head-cont">
+        <div class="header-bar">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="theLogo">
+                            <img src="/assets/logo.png" alt="">
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6 text-right">
+
+                        <b>ICO Tool</b>
+                        <br>
+                        Smart Contract Source Code Submission and Verification
+
+
+                            <!--{{#if currentUser}}-->
+                            <!--<a href="#" onclick="Meteor.logout()" class="btn btn-xs btn-dark"><i class="fa fa-user"></i> Logout</a>-->
+                            <!--<a href="/p/config"  class="btn btn-xs btn-dark"><i class="fa fa-cog"></i> Config</a>-->
+                        <!--{{/if}}-->
+                        <!--<div class="network">-->
+                        <!---->
+                        <!--</div>-->
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+<div class="container marg">
+
+    <div class="card">
+
+        <div class="card-header">Purpose</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-sm-12">
+
+                    {{>howTo}}
+                    <!--<div class="lg"><b><a href="/">ICO Tool</a> <small>Beta</small></b>  <br> <small>Smart Contract Source Code Submission and Verification</small> </div>-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</template>

@@ -1,0 +1,52 @@
+<template name="config">
+
+
+    <div class="container white">
+        <div class="jumbotron">
+        <h1>ICO Tool Admin</h1>
+        </div>
+
+
+        {{>createICOUser}}
+        <hr>
+
+        {{#each conf}}
+            <div class="card">
+                <div class="card-header">
+                    Config Variables: {{_id}}
+                </div>
+                <div class="card-body">
+                    <div class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-6 theLabel">
+                            Explorer API URL:
+                        </div>
+                        <div class="col-sm-5 text-right theVal">
+                             {{explorerApiUrl}}
+                        </div>
+                        <div class="col-sm-1 text-right">
+                            <div class="btn btn-xs editMe editBtn btn-primary"><i class="fa fa-edit"></i></div>
+                        </div>
+                    </div>
+                    </div>
+                    <div class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6 theLabel">
+                                Blockchain RPC URL:
+                            </div>
+                            <div class="col-sm-5 text-right theVal">
+                                {{blockchainRPCUrl}}
+                            </div>
+                            <div class="col-sm-1 text-right">
+                                <div class="btn btn-xs editBtn editBlock btn-primary"><i class="fa fa-edit"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
+        {{/each}}
+    </div>
+</template>
