@@ -48,5 +48,43 @@ For the contract that is submitted and verified, the following artifacts will be
 5. Contract_address.abi:  The ABI (Application Binary Interface) of a smart contract
 6. These artifacts will be used by Wanchain tools such as explorer and wallet.
 
+# Development Information
+
+#### Make sure you have Meteor Installed
+
+https://www.meteor.com/install
+
+#### Running dApp Locally
+
+`git clone https://github.com/wanchain/wanchain-ico-verification.git`
+
+`cd wanchain-ico-verification`
+
+`meteor npm install --save` // install npm dependencies
+
+open `settings.json` and enter values // explorer api url / blockchain rpc url / encryption password
+
+`meteor --settings settings.json --port 9000`
+
+<a href="http://localhost:9000">Open locahost:9000</a>
+
+#### Creating a User Account
+create an account by clicking <b>register</b>
+
+- once you create your account you should change the settings.json variable so client account creation is turned off 
+
+<pre>
+"public": {
+    "users": {
+      "forbidAccountCreation": true
+    }
+  }
+</pre>
+
+- for settings to take effect you will need to restart your application.
+- if you need to create another account just change the variable to `false`
+
+
+
 
 

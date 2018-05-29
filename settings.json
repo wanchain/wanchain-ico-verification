@@ -1,7 +1,15 @@
 {
-  "env":{
-    "password":"xxxxxxx",
-    "blockchainRPCUrl":"xxxxxxx",
-    "explorerApiUrl":"xxxxxxxxxx"
+  "env": {
+    "password": "xxxxxxx",
+    "explorerApiUrl": "xxxxxxxxxx"
+  },
+  "public": {
+    "rpc":{
+      "testnet":"xxxxxxx",
+      "mainnet":"xxxxxxx"
+    },
+    "users": {
+      "forbidAccountCreation": false
+    }
   }
 }

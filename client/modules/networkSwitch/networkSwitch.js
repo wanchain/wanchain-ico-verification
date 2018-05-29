@@ -7,19 +7,12 @@ Template.networkSwitch.helpers({
 Template.networkSwitch.events({
     'change .network':function(event,template){
         event.preventDefault();
-        console.log('test');
         var theVal = $(event.target).val();
-        var config = ToolConfig.findOne(theVal);
-        if(theVal === 'mainnet'){
-            web3.setProvider(config.blockchainRPCUrl);
-            Session.set('network','mainnet')
-            console.log('connecting to mainnet');
-        }else{
-            web3.setProvider(config.blockchainRPCUrl);
-            Session.set('network','testnet');
-            console.log('connecting to testnet');
-        }
-
+        console.log('changing network to '+theVal + '....');
+        var config = Meteor.settings.public.rpc[theVal]
+        web3.setProvider(config);
+        Session.set('network',theVal);
+        console.log('done.');
     }
 });
 
