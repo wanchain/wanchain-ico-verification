@@ -156,11 +156,20 @@ Meteor.methods({
         return theUrl
 
     },
-    'decrypt': function (encrypted) {
+    'decrypt': function (contractAddress,encrypted) {
         var CryptoJS = require("crypto-js");
 
-        var decrypted = CryptoJS.AES.decrypt(encrypted.toString(), contractAddress.toLowerCase() + Meteor.settings.env.password).toString(CryptoJS.enc.Utf8);
+        console.log(encrypted);
 
+        var password = Meteor.settings.env.password;
+
+        console.log(contractAddress.toLowerCase() + password);
+
+        var encrypted = CryptoJS.AES.encrypt(contractAddress, contractAddress.toLowerCase() + password);
+
+        var decrypted = CryptoJS.AES.decrypt(encrypted.toString(), contractAddress.toLowerCase() + password).toString(CryptoJS.enc.Utf8);
+
+        console.log('encrypted', encrypted.toString());
         console.log('decrypted', decrypted);
 
     },

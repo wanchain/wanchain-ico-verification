@@ -28,7 +28,7 @@ rm -rf ~/meteorBuilds/icoTool/buildThree/bundle
 
 meteor build ~/meteorBuilds/icoTool/buildThree --architecture os.linux.x86_64
 
-tar -xvzf ~/meteorBuilds/icoTool/buildThree/ico-contract-verification-tool.tar.gz
+tar -xvzf ~/meteorBuilds/icoTool/buildThree/wanchain-ico-verification.tar.gz
 
 cd ~/meteorBuilds/icoTool/buildThree/bundle/programs/server
 
@@ -44,3 +44,4 @@ sudo service nginx restart
 
 `tar -xvzf contract-verification-tool.tar.gz`
 
+cp -R ~/wanChain/wanchainExplorer/ ~/wanChain/wanchainICOTool // copy to private repo
