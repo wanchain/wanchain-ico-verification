@@ -328,7 +328,7 @@ Template.tokenForm.events({
         });
 
         tokenObj.decimals = parseFloat(tokenObj.decimals || 0);
-        tokenObj.totalSupply = parseFloat(tokenObj.totalSupply || 0);
+        // tokenObj.totalSupply = parseFloat(tokenObj.totalSupply || 0);
 
         Session.set('tokenObj', tokenObj);
 
