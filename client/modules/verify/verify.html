@@ -1,0 +1,85 @@
+<template name="verify">
+    <div class="container marg">
+
+        <div class="card">
+
+            <div class="card-header">Purpose</div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-sm-12">
+
+                       <p>This tool is used to convert and verify Wanchain addresses.</p>
+                        <p class="text-danger">Disclaimer: Please check that the converted address has the same characters as the original address.
+                            </p>
+                        <p class="text-danger">
+                            Use at your own risk.
+                        </p>
+                        <!--<div class="lg"><b><a href="/">ICO Tool</a> <small>Beta</small></b>  <br> <small>Smart Contract Source Code Submission and Verification</small> </div>-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <form class="verifyForm container">
+        <div class="form-group row">
+            <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
+            <div class="col-sm-10">
+                <input type="text" value="" name="address"
+                       class="form-control" id="addressInput"
+                       placeholder="Enter Address">
+            </div>
+
+        </div>
+
+
+        <div class="form-group row">
+
+            <label for="convertedInput" class="col-sm-2 col-form-label">Converted</label>
+            <div class="col-sm-10">
+                <input type="text" value="{{wanchainAddress}}" name="converted"
+                       class="form-control" id="convertedInput"
+                       placeholder="" readonly>
+            </div>
+        </div>
+
+        <div class="form-group row">
+
+            <label for="addressInput" class="col-sm-2 col-form-label">
+
+            </label>
+            <div class="col-sm-10">
+                {{#if wanchainAddress}}
+                    {{#if verified}}
+                    {{else}}
+                        <button class="btn btn-success" action="verify" type="submit">Verify Address</button>
+                    {{/if}}
+                {{else}}
+                    <button class="btn btn-primary" action="convert" type="submit">Convert Address</button>
+                {{/if}}
+
+
+
+                {{#if verifyAttempt}}
+                    {{#if verified}}
+                        <div class="text-success"><i class="fa fa-check"></i> Valid Wanchain Address</div>
+                    {{else}}
+                        <div class="text-danger"><i class="fa fa-remove"></i> Invalid Wanchain Address</div>
+                    {{/if}}
+                {{else}}
+                    {{#if wanchainAddress}}
+                    {{else}}
+
+                    {{/if}}
+                {{/if}}
+            </div>
+        </div>
+
+
+    </form>
+
+    <style>
+        .container.marg.mark {
+            display:none;
+        }
+    </style>
+</template>

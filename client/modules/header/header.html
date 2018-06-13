@@ -14,13 +14,19 @@
                     </div>
 
                     <div class="col-sm-8 text-right">
+
+
                         {{#if currentUser}}
                             <a href="/" class="btn btn-xs btn-dark"><i class="fa fa-home"></i> Home</a>
+                            <a href="/verification"  class="btn btn-xs btn-dark"><i class="fa fa-check"></i> Convert/Verify Address</a>
                         {{#if currentUser.profile.admin}}
                             <a href="/p/config"  class="btn btn-xs btn-dark"><i class="fa fa-cog"></i> Admin</a>
                         {{/if}}
                             <a href="#" onclick="Meteor.logout()" class="btn btn-xs btn-dark"><i class="fa fa-user"></i> Logout</a>
+                            {{else}}
+                            <a href="/verification"  class="btn btn-xs btn-dark"><i class="fa fa-check"></i> Convert/Verify Address</a>
                         {{/if}}
+
                         <!--<div class="network">-->
                         <!---->
                         <!--</div>-->
@@ -64,7 +70,7 @@
 
         </div>
     </div>
-<div class="container marg">
+<div class="container marg mark">
 
     <div class="card">
 
