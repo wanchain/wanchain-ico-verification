@@ -14,10 +14,50 @@ Template.verify.helpers({
 });
 
 Template.verify.events({
-    'keyup .verifyForm input': function (event, template) {
+    'keyup .verifyForm #addressInput': function (event, template) {
         Session.set('wanchainAddress', false);
         Session.set('verified', false);
         Session.set('verifyAttempt', false);
+        var theVal = $(event.target).val();
+        var lower = theVal.toLowerCase();
+        var upper = theVal.toUpperCase();
+        if(theVal === lower){
+            console.log('is lower')
+        }else{
+            if(theVal === upper){
+
+            }else{
+                action ='verify';
+                var wanchain_address = toChecksumAddress(theVal, web3);
+                Session.set('verifyAttempt',true);
+
+                if (action === "verify") {
+                    Session.set('verifyAttempt', true);
+                    if (theVal == wanchain_address) {
+                        //alert('hey')
+                        Session.set('verified', true);
+                        Session.set('wanchainAddress', wanchain_address);
+
+                        sweetAlert({
+                            title: "Wanchain Address",
+                            html:"<p>Here is the converted and valid wanchain address:</p> <br><input class='form-control' value='"+ wanchain_address+"'>",
+                            type: "success",
+                            button: "Ok",
+                        });
+
+                    } else {
+                        Session.set('verified', false);
+                        Session.set('wanchainAddress', false);
+
+                    }
+                } else {
+
+                    Session.set('verifyAttempt', false);
+                    Session.set('verified', false);
+                    Session.set('wanchainAddress', wanchain_address);
+                }
+            }
+        }
     },
     'submit .verifyForm': function (event, template) {
         event.preventDefault();
@@ -33,7 +73,12 @@ Template.verify.events({
             if (hash.length === 40) {
 
             } else {
-                alert('invalid address length');
+                sweetAlert({
+                    title: "Invalid Address Length",
+                    text: "The address you entered is not valid.",
+                    type: "warning",
+                    button: "Try Again",
+                });
                 return false
             }
         } else {
@@ -49,6 +94,14 @@ Template.verify.events({
                 //alert('hey')
                 Session.set('verified', true);
                 Session.set('wanchainAddress', wanchain_address);
+
+                sweetAlert({
+                    title: "Wanchain Address",
+                    html:"<p>Here is the converted and valid wanchain address:</p> <br><input class='form-control' value='"+ wanchain_address+"'>",
+                    type: "success",
+                    button: "Ok",
+                });
+
             } else {
                 Session.set('verified', false);
                 Session.set('wanchainAddress', false);

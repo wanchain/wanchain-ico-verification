@@ -5,8 +5,8 @@ import './main.html';
 
 Web3 = require('web3');
 
- web3 = new Web3(new Web3.providers.HttpProvider("http://159.89.159.139:8549"));
- // web3 = new Web3(new Web3.providers.HttpProvider("http://192.168.1.133:8546")); // local testing
+web3 = new Web3(new Web3.providers.HttpProvider(Meteor.settings.public.rpc.testnet));
+
 
 Session.set('network','testnet');
 
@@ -25,7 +25,7 @@ Meteor.startup(function() {
         //console.log(resp);
         Session.set('path',resp);
     })
-    Meteor.subscribe('toolconf');
+    // Meteor.subscribe('toolconf');
 
 });
 
