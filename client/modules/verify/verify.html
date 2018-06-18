@@ -25,7 +25,11 @@
                 </div>
             </div>
         </div>
+
         <form class="verifyForm container">
+            {{#if verified}}
+
+            {{else}}
             <div class="form-group row">
                 <label for="inputPassword" class="col-sm-2 col-form-label">Address</label>
                 <div class="col-sm-10">
@@ -35,8 +39,11 @@
                 </div>
 
             </div>
+            {{/if}}
 
             {{#if wanchainAddress}}
+                {{#if verified}}
+                    {{else}}
                 <div class="form-group row">
 
                     <label for="convertedInput" class="col-sm-2 col-form-label">Converted</label>
@@ -46,6 +53,7 @@
                                placeholder="" readonly>
                     </div>
                 </div>
+                    {{/if}}
             {{/if}}
 
             <div class="form-group row">
@@ -56,6 +64,7 @@
                 <div class="col-sm-10">
                     {{#if wanchainAddress}}
                         {{#if verified}}
+                          <p>  <a href="#" class="backup btn btn-primary"><i class="fa fa-arrow-left"></i> Verify/Convert Another Address</a></p>
                         {{else}}
                             <button class="btn btn-success" action="verify" type="submit">Verify Address</button>
                         {{/if}}
@@ -67,15 +76,19 @@
 
                     {{#if verifyAttempt}}
                         {{#if verified}}
+                            <div class="jumbotron valid">
                             <div class="text-success"><i class="fa fa-check"></i> Valid Wanchain Address <a
                                     class="pull-right" target="_blank"
                                     href="https://explorer.wanchain.org/block/addr/{{wanchainAddress}}">View on
-                                Explorer</a></div>
-
+                                Explorer</a>
+                            <!--<p class="lead"><b>{{wanchainAddress}}</b></p>-->
+                                <p style="margin-top:20px;"><input type="text" value="{{wanchainAddress}}" class="form-control"></p>
+                            </div>
+                            </div>
 
                         {{else}}
                             <br><br>
-                            <div class="text-danger"><i class="fa fa-remove"></i> Invalid Wanchain Address</div>
+                            <div class="text-danger"><i class="fa fa-remove"></i> Invalid Wanchain Address (due to bad checksum)</div>
                         {{/if}}
                     {{else}}
                         {{#if wanchainAddress}}

@@ -14,6 +14,12 @@ Template.verify.helpers({
 });
 
 Template.verify.events({
+    'click .backup': function (event, template) {
+        event.preventDefault();
+        Session.set('wanchainAddress', false);
+        Session.set('verified', false);
+        Session.set('verifyAttempt', false);
+    },
     'keyup .verifyForm #addressInput': function (event, template) {
         Session.set('wanchainAddress', false);
         Session.set('verified', false);
@@ -21,15 +27,15 @@ Template.verify.events({
         var theVal = $(event.target).val();
         var lower = theVal.toLowerCase();
         var upper = theVal.toUpperCase();
-        if(theVal === lower){
+        if (theVal === lower) {
             console.log('is lower')
-        }else{
-            if(theVal === upper){
+        } else {
+            if (theVal === upper) {
 
-            }else{
-                action ='verify';
+            } else {
+                action = 'verify';
                 var wanchain_address = toChecksumAddress(theVal, web3);
-                Session.set('verifyAttempt',true);
+                Session.set('verifyAttempt', true);
 
                 if (action === "verify") {
                     Session.set('verifyAttempt', true);
@@ -38,12 +44,12 @@ Template.verify.events({
                         Session.set('verified', true);
                         Session.set('wanchainAddress', wanchain_address);
 
-                        sweetAlert({
-                            title: "Wanchain Address",
-                            html:"<p>Here is the converted and valid wanchain address:</p> <br><input class='form-control' value='"+ wanchain_address+"'>",
-                            type: "success",
-                            button: "Ok",
-                        });
+                        // sweetAlert({
+                        //     title: "Wanchain Address",
+                        //     html:"<p>Here is the converted and valid wanchain address:</p> <br><input class='form-control' value='"+ wanchain_address+"'>",
+                        //     type: "success",
+                        //     button: "Ok",
+                        // });
 
                     } else {
                         Session.set('verified', false);
@@ -94,13 +100,13 @@ Template.verify.events({
                 //alert('hey')
                 Session.set('verified', true);
                 Session.set('wanchainAddress', wanchain_address);
-
-                sweetAlert({
-                    title: "Wanchain Address",
-                    html:"<p>Here is the converted and valid wanchain address:</p> <br><input class='form-control' value='"+ wanchain_address+"'>",
-                    type: "success",
-                    button: "Ok",
-                });
+                //
+                // sweetAlert({
+                //     title: "Wanchain Address",
+                //     html:"<p>Here is the converted and valid wanchain address:</p> <br><input class='form-control' value='"+ wanchain_address+"'>",
+                //     type: "success",
+                //     button: "Ok",
+                // });
 
             } else {
                 Session.set('verified', false);
