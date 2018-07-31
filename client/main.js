@@ -1,6 +1,9 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
+import '../imports/startup/lib';
+import '../imports/startup/client';
+
 import './main.html';
 
 Web3 = require('web3');

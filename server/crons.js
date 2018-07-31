@@ -1,3 +1,5 @@
+import { ICOTokens } from '../imports/startup/lib/collections';
+
 SyncedCron.add({
     name: 'Send Verified ICOS',
     schedule: function (parser) {
@@ -38,6 +40,3 @@ SyncedCron.add({
         })
     }
 });
-
-
-

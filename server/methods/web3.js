@@ -1,5 +1,5 @@
 import { Meteor } from 'meteor/meteor';
-import { instantiateWeb3 } from '../utils';
+import { instantiateWeb3 } from '../../imports/utils/web3';
 
 Meteor.methods({
 
