@@ -14,6 +14,7 @@ scp wanchain-ico-verification.tar.gz <user>@<ip>:~/
 3. Log on to server and untar the bundle
 ```
 ssh <user>@<ip>
+sudo rm -r /opt/ico-verification-tool/bundle-previous
 sudo mv /opt/ico-verification-tool/bundle{,-previous}
 sudo tar -xzvf wanchain-ico-verification.tar.gz -C /opt/ico-verification-tool
 sudo chown -R explorer:explorer /opt/ico-verification-tool
