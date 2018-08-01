@@ -1,143 +1,128 @@
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
+
 import { ICOTokens } from '../../startup/lib/collections';
+import getSwal from '../swal';
 
 import './contractForm.html';
 
 Template.contractForm.helpers({
-    'contract': function () {
-        return ICOTokens.findOne(Session.get('contractAddress'))
-    },
-    'hasVal':function(theV){
-        var self = ICOTokens.find({'_id': Session.get('contractAddress')}).fetch()[0]
-        if(theV && ICOTokens.find({'_id': Session.get('contractAddress')}).count()){
-        if(self[theV] && self.verified){
-            return 'disabled'
-        }
-        }
+  contract() {
+    return ICOTokens.findOne(Session.get('contractAddress'));
+  },
+
+  hasVal(key) {
+    if (key && ICOTokens.find().count()) {
+      const token = ICOTokens.findOne({ _id: Session.get('contractAddress') });
+      if (token && token[key] && token.verified) {
+        return 'disabled';
+      }
     }
-
-
+  }
 });
 
 Template.contractForm.events({
-    'change .uploadit': function (ev) {
-        console.log(ev);
-        var file = document.getElementById('thecode').files[0];
-        if (file) {
-            // create reader
-            var reader = new FileReader();
-            reader.readAsText(file);
-            reader.onload = function (e) {
-                // browser completed reading file - display it
+  'change .optimized'(event, template) {
+    const address = Session.get('contractAddress');
+    const optimized = !! $(event.target).val();
 
-                ICOTokens.update({'_id': Session.get('contractAddress')}, {$set: {'solidity': e.target.result}});
+    ICOTokens.update({ _id: address }, {
+      $set: { optimized, optimizedSet: true }
+    });
+  },
 
-                Meteor.call('saveF', e.target.result, Session.get('contractAddress') + '.sol');
+  'change .compiler'(event, template) {
+    const address = Session.get('contractAddress');
+    const compiler = $(event.target).val() || false;
 
-                swal({
-                    title: 'Solidity Code Saved',
-                    text: 'Now add your ABI Constructor Arguments',
-                    type: 'success',
+    ICOTokens.update({ _id: address }, { $set: { compiler }});
+  },
 
-                    confirmButtonColor: '#dd6b55',
-                    cancelButtonColor: '#d44',
-                    closeOnConfirm: true
-                }, function () {
-                    window.scroll({
-                        top: 950,
-                        left: 0,
-                        behavior: 'smooth'
-                    });
-                });
-            };
-        }
-    },
-    'change .optimized': function (event, template) {
-        var theVal = $(event.target).val();
+  'change .upload'(ev) {
+    console.log(ev);
 
-        if (theVal) {
-            theVal = true;
-        } else {
-            theVal = false;
-        }
+    const file = document.getElementById('solidityCode').files[0];
 
-        ICOTokens.update({'_id': Session.get('contractAddress')}, {$set: {'optimizedSet': true, 'optimized': theVal}});
-    },
-
-    'change .compiler': function (event, template) {
-        var theVal = $(event.target).val();
-
-        if (theVal) {
-
-        } else {
-            theVal = false;
-        }
-
-        ICOTokens.update({'_id': Session.get('contractAddress')}, {$set: {'compiler': theVal}});
-    },
-    'submit .contractForm': function (event, template) {
-        event.preventDefault();
-
-        var tokenInfo = ICOTokens.findOne(Session.get('contractAddress'));
-        var theCode = $('.contractCode').val();
-        var theAbi = $('.abi').val();
-
-        // console.log('code', theCode);
-        if ($('.optimized').val()) {
-            var isOptimized = true;
-        }
-        var updateToken = ICOTokens.update({'_id': Session.get('contractAddress')}, {
-            $set: {
-                'abi': theAbi,
-                'solidity': theCode,
-                optimized: isOptimized
-            }
-        });
-
-        console.log('token update', updateToken);
-
-        // console.log(tokenInfo);
-
-
-        $('#myTab a[href="#settings"]').tab('show');
-
-        setTimeout(function () {
-            Meteor.call('contract', Session.get('contractAddress'), Session.get('network'), function (err, resp) {
-
-                // console.log(resp)
-            })
-        }, 2000)
-        Session.set('creatingTar', true);
-        setTimeout(function () {
-            Session.set('creatingTar', false);
-            Meteor.call('verify',Session.get('contractAddress'),Session.get('network'),function(err,resp){
-
-                Session.set('verifyUrl',resp);
-
-
-                ICOTokens.update({'_id':Session.get('contractAddress')},{$set:{verifyUrl:resp}})
-
-            });
-
-
-        }, 10000)
-
-
-
-
+    if (! file) {
+      return;
     }
+
+    const address = Session.get('contractAddress');
+    const fileName = `${address}.sol`;
+    const reader = new FileReader();
+
+    reader.readAsText(file);
+
+    reader.onload = function(e) {
+      // browser completed reading file - display it
+      const solidity = e.target.result;
+
+      ICOTokens.update({ _id: address }, { $set: { solidity }});
+
+      Meteor.call('saveFile', solidity, fileName);
+
+      swal(getSwal(
+        'Solidity Code Saved',
+        'Now add your ABI Constructor Arguments',
+        'success',
+      ), function() {
+        window.scroll({
+          top: 950,
+          left: 0,
+          behavior: 'smooth'
+        });
+      });
+    };
+  },
+
+  'submit .contractForm'(event, template) {
+    event.preventDefault();
+
+    const address = Session.get('contractAddress');
+    const network = Session.get('network');
+
+    const abi = $('.abi').val();
+    const solidity = $('.contractCode').val();
+    const optimized = !! $('.optimized').val() ;
+
+    const updateToken = ICOTokens.update({ _id: address }, {
+      $set: { abi, solidity, optimized }
+    });
+
+    console.log('token update', updateToken);
+
+    $('#myTab a[href="#settings"]').tab('show');
+
+    Session.set('creatingTar', true);
+
+    Meteor.call('verifyContractCode', address, network, function(err, res) {
+      if (err) {
+        console.log(err);
+        return;
+      }
+
+      Session.set('creatingTar', false);
+
+      Meteor.call('setVerifyUrl', address, network, function(err, verifyUrl) {
+        if (err) {
+          console.log(err);
+          return;
+        }
+
+        Session.set('verifyUrl', verifyUrl);
+      });
+    });
+  }
 });
 
-Template.contractForm.onCreated(function () {
+Template.contractForm.onCreated(function() {
 
 });
 
-Template.contractForm.onRendered(function () {
-
+Template.contractForm.onRendered(function() {
 
 });
 
-Template.contractForm.onDestroyed(function () {
-    //add your statement here
+Template.contractForm.onDestroyed(function() {
+  //add your statement here
 });

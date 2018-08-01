@@ -8,6 +8,8 @@ SyncedCron.add({
 
     },
     job: function () {
+        return;
+
         _.each(ICOTokens.find({verified: true, explorersuccess: {$ne: true}}).fetch(), function (e) {
 
             Fiber(function () {

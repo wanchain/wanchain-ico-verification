@@ -1,180 +1,169 @@
+import CryptoJS from 'crypto-js';
+
+import { Meteor } from 'meteor/meteor';
+
+import { ICOTokens } from '../../imports/startup/lib/collections';
+import { instantiateWeb3 } from '../../imports/utils/web3';
+import { saveFile } from '../../imports/files/saveFile';
+import { createTar } from '../../imports/files/createTar';
+
 Meteor.methods({
+  pingExplorer,
+  setVerifyUrl,
+  verifyContractCode,
+});
 
-    'contract': function (contractAddress, network) {
-        var Web3 = require('web3');
-        var web3 = new Web3(new Web3.providers.HttpProvider(Meteor.settings.public.rpc[network]));
-        var contractObj = ICOTokens.findOne(contractAddress);
+function buildSource(token) {
+  return {
+    // Required: Source code language, such as 'Solidity', 'serpent', 'lll',
+    // 'assembly', etc.
+    language: 'Solidity',
 
-        match = false;
-
-        theSources = {};
-
-        theSources[contractAddress + '.sol'] = ICOTokens.findOne(contractAddress).solidity;
-
-        console.log('contract obj', contractObj);
-
-        var input = {
-            // Required: Source code language, such as "Solidity", "serpent", "lll", "assembly", etc.
-            language: "Solidity",
-
-            sources: theSources,
-            // Optional
-            "compiler": {
-                "version": contractObj.compiler || false,
-            },
-            settings:
-                {
-                    optimizer: {
-                        enabled: contractObj.optimized,
-                        runs: 200
-                    },
-
-                    evmVersion: "byzantium", // Version of the EVM to compile for. Affects type checking and code generation. Can be homestead, tangerineWhistle, spuriousDragon, byzantium or constantinople
-                    outputSelection: {
-                        // Enable the metadata and bytecode outputs of every single contract.
-                        "*": {
-                            "*": ["metadata", "evm.bytecode"]
-                        },
-                        // Enable the abi and opcodes output of MyContract defined in file def.
-                        "def": {
-                            "Counter": ["abi", "evm.bytecode.opcodes", "evm.bytecode"]
-                        },
-                        // Enable the source map output of every single contract.
-                        "*": {
-                            "*": ["evm.bytecode.sourceMap"]
-                        },
-                        // Enable the legacy AST output of every single file.
-                        "*": {
-                            "": ["legacyAST"]
-                        }
-                    }
-                }
-        }
-
-        if (contractObj.optimized) {
-            var opt = 1
-        } else {
-            var opt = 0
-        }
-        var output = solc.compile(input, opt); // 1 activates the optimiser
-        var thecode = ''
-        web3.eth.getCode(contractAddress.toUpperCase(), function (err, resp) {
-            var blockchainCode = resp.split('0x')[1].split('a165627a7a72305820')[0];
-            for (var contractName in output.contracts) {
-                // code and ABI that are needed by web3
-
-                console.log(output.contracts[contractName].bytecode)
-                if (!match) {
-                    var compiledCode = output.contracts[contractName].bytecode.split('a165627a7a72305820')[0];
-                    thecode = thecode + compiledCode;
-                    if (compiledCode.split('f300').length > 1) {
-
-                        compiledCode = compiledCode.split('f300')[1];
-
-                    } else {
-                        compiledCode = compiledCode;
-                    }
-
-                    console.log('1', blockchainCode);
-                    console.log('2', thecode.split('f300')[1]);
-                    console.log('2', compiledCode);
-
-                    if (compiledCode === blockchainCode && compiledCode.indexOf(blockchainCode) !== -1) {
-
-                        match = true;
-
-                        Fiber(function () {
-
-                            ICOTokens.update({'_id': contractAddress}, {$set: {verifyattempt: true, verified: true}})
-
-                            sleep(3000);
-
-                            Meteor.call('saveF', contractObj.solidity, contractAddress + '.sol');
-                            Meteor.call('saveF', contractObj.abi, contractAddress + '.abi');
-                            Meteor.call('createTar', contractAddress);
-
-                        }).run()
-
-                    } else {
-
-                        console.log('no match......')
-
-                        Fiber(function () {
-                            //TickerStats.remove({'_id':'LTC'});
-
-                            //sleep(2000);
-                            //TickerStats.insert({'_id':'LTC'})
-                            sleep(2000);
-
-                            if (!match) {
-                                ICOTokens.update({'_id': contractAddress}, {
-                                    $set: {
-                                        verifyattempt: true,
-                                        verified: false
-                                    }
-                                });
-                                console.log('does it match')
-                            } else {
-                                console.log('we got ourselves a match ladies and gentlemen')
-                            }
-                        }).run();
-
-
-                    }
-
-                }
-                else {
-                    console.log('WE HAVE A MATCH!!!')
-                }
-
-
-            }
-
-        });
-
-
+    sources: {
+      [token._id]: token.solidity,
     },
-    'verify': function (contractAddress, theNet) {
-        var CryptoJS = require("crypto-js");
 
-        var encrypted = CryptoJS.AES.encrypt(contractAddress, contractAddress.toLowerCase() + password);
-
-        console.log('encrypted', encrypted.toString());
-
-        var password = Meteor.settings.env.password;
-
-        var explorerApiUrl = Meteor.settings.env.explorerApiUrl;
-
-        var decrypted = CryptoJS.AES.decrypt(encrypted.toString(), contractAddress.toLowerCase() + password).toString(CryptoJS.enc.Utf8);
-
-        console.log('decrypted', decrypted);
-
-        var theUrl = explorerApiUrl + '/' + contractAddress + '/' + encodeURIComponent(encrypted.toString());
-
-        console.log(theUrl);
-
-        return theUrl
-
+    // Optional
+    compiler: {
+      version: token.compiler || false,
     },
-    'decrypt': function (contractAddress,encrypted) {
-        var CryptoJS = require("crypto-js");
 
-        console.log(encrypted);
+    settings: {
+      optimizer: {
+        enabled: token.optimized,
+        runs: 200
+      },
 
-        var password = Meteor.settings.env.password;
+      // Version of the EVM to compile for. Affects type checking and code
+      // generation. Can be homestead, tangerineWhistle, spuriousDragon,
+      // byzantium or constantinople
+      evmVersion: 'byzantium',
 
-        console.log(contractAddress.toLowerCase() + password);
-
-        var encrypted = CryptoJS.AES.encrypt(contractAddress, contractAddress.toLowerCase() + password);
-
-        var decrypted = CryptoJS.AES.decrypt(encrypted.toString(), contractAddress.toLowerCase() + password).toString(CryptoJS.enc.Utf8);
-
-        console.log('encrypted', encrypted.toString());
-        console.log('decrypted', decrypted);
-
-    },
-    'pingExplorer': function (contractAddress) {
-        var theUrl = ICOTokens.findOne(contractAddress).verifyUrl;
-        return HTTP.get(theUrl);
+      outputSelection: {
+        // Enable the metadata and bytecode outputs of every single contract.
+        // Enable the source map output of every single contract.
+        // Enable the legacy AST output of every single file.
+        '*': {
+          '*': ['metadata', 'evm.bytecode', 'evm.bytecode.sourceMap', 'legacyAST']
+        },
+        // Enable the abi and opcodes output of MyContract defined in file def.
+        'def': {
+          'Counter': ['abi', 'evm.bytecode.opcodes', 'evm.bytecode']
+        },
+      }
     }
-})
+  };
+}
+
+function verifyContractCode(address, network) {
+  const web3 = instantiateWeb3(network);
+  const token = ICOTokens.findOne(address);
+
+  const source = buildSource(token);
+  const optimized = token.optimized ? 1 : 0;
+  const compiled = solc.compile(source, optimized); // 1 activates the optimiser
+  const contractNames = Object.keys(compiled.contracts);
+
+  let matched = false;
+
+  return new Promise((resolve, reject) => {
+
+    if (! contractNames.length) {
+      return reject();
+    }
+
+    web3.eth.getCode(address.toUpperCase()).then(deployedCode => {
+
+      const blockchainCode = deployedCode.replace('0x', '').split('a165627a7a72305820')[0];
+
+      console.log(blockchainCode);
+
+      console.log(compiled.contracts.length);
+
+      for (let i = 0; i < contractNames.length; i++) {
+        if (matched) continue;
+
+        console.log(i);
+
+        const contractName = contractNames[i];
+        let compiledCode = compiled.contracts[contractName].bytecode.split('a165627a7a72305820')[0];
+
+        console.log(contractName);
+        console.log(compiled.contracts[contractName].bytecode);
+
+        // if (compiledCode.split('f300').length > 1) {
+        //   console.log('splitting on f300');
+        //   compiledCode = compiledCode.split('f300')[1];
+        // }
+
+        // console.log('1', blockchainCode);
+        // console.log('2', compiledCode);
+
+        if (compiledCode === blockchainCode) {
+
+          console.log('it matched!');
+          matched = true;
+
+          ICOTokens.update({ _id: address }, {
+            $set: {
+              verifyattempt: true,
+              verified: true,
+            }
+          });
+
+          const saveSol = saveFile(token.solidity, `${address}.sol`);
+          const saveAbi = saveFile(token.abi, `${address}.abi`);
+          const saveTar = createTar(address);
+
+          Promise.all([ saveSol, saveAbi ]).then(saveTar).catch(err => {
+            console.log('Error saving tar', err);
+            reject(err);
+          }).then(res => {
+            resolve();
+          });
+
+        } else {
+
+          console.log('no match......')
+
+          ICOTokens.update({ _id: address }, {
+            $set: {
+              verifyattempt: true,
+              verified: false,
+            }
+          });
+
+          if (i == contractNames.length - 1) {
+            resolve();
+          }
+        }
+      }
+    }).catch(err => {
+      console.log(err);
+      reject(err);
+    });
+  });
+};
+
+function setVerifyUrl(address) {
+  const {
+    password,
+    explorerApiUrl,
+  } = Meteor.settings.env;
+
+  const encrypted = CryptoJS.AES.encrypt(address, address.toLowerCase() + password);
+  const verifyUrl = `${explorerApiUrl}/${address}/${encodeURIComponent(encrypted.toString())}`;
+
+  ICOTokens.update({ _id: address }, {
+    $set: { verifyUrl },
+  });
+
+  return verifyUrl;
+};
+
+function pingExplorer(address) {
+  const token = ICOTokens.findOne(address);
+  if (token && token.verifyUrl) {
+    return HTTP.get(token.verifyUrl);
+  }
+}
