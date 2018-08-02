@@ -30,7 +30,7 @@ Template.createICOUser.events({
       user[field.name] = field.value;
     });
 
-    Meteor.call('createAccount', user, function(err, res) {
+    Meteor.call('addUser', user, function(err, res) {
       console.log(res);
     })
   },

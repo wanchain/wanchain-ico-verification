@@ -4,27 +4,27 @@
     <div class="card-body">
 
       <form action="" class="tokenForm">
-
         <div class="row">
+
           <div class="col-sm-12">
             <div class="form-group">
-              <div class="card  addresscard ">
+              <div class="card addresscard ">
                 <div class="card-body">
-                  <label for="basic-url">Contract Address</label>
-                  <div class="input-group">
-                    <input type="text" name="contractAddress" value="{{#if
-                        addy}}{{addy}}{{else}}0xb3B274d79EfFFDda2f320D6C14fF117dD6787b96{{/if}}"
-                         class="form-control input-lg address contractAddress">
-                    <div class="button btn btn-primary check">Load</div>
 
+                  <label for="basic-url">Contract Address</label>
+
+                  <div class="input-group">
+                    <input type="text" name="contractAddress"
+                       value="{{#if address}}{{address}}{{else}}0xb3B274d79EfFFDda2f320D6C14fF117dD6787b96{{/if}}"
+                       class="form-control input-lg address contractAddress">
+                    <div class="button btn btn-primary check">Load</div>
                   </div>
 
                   {{#if loading}}
-                    <div class="alert alert-{{#if
-                        loading.class}}{{loading.class}}{{else}}info{{/if}}">
+                    <div class="alert alert-{{#if loading.class}}{{loading.class}}{{else}}info{{/if}}">
                       <div> {{{loading.message}}}</div>
                     </div>
-                    {{#if contractAddress.verified}}
+                    {{#if token.verified}}
                       <div class="alert alert-success"><i class="fa fa-check"></i> Verified</div>
                     {{else}}
                       <div class="alert alert-danger"><i class="fa fa-warning"></i> Not Verified
@@ -35,23 +35,20 @@
 
                 </div>
               </div>
-
             </div>
           </div>
+
           <hr>
 
-          {{#if contractAddress._id}}
+          {{#if token._id}}
             <div class="col-sm-4">
-
               <div class="form-group">
+
                 <label for="">Icon (png, jpeg, jpg)</label>
 
                 <div class="tokenIcon">
-
-                  <img src="{{#if
-                      contractAddress.icon}}{{contractAddress.icon}}{{else}}https://wanchain.org/dist/15ac90f64e631511ce7c8351d79367a4.png{{/if}}"
-                     alt="">
-                  {{#if contractAddress.icon}}
+                  <img src="{{#if token.icon}}{{token.icon}}{{else}}https://wanchain.org/dist/15ac90f64e631511ce7c8351d79367a4.png{{/if}}" alt="">
+                  {{#if token.icon}}
                     <div class="alert alert-success upIcon"><i class="fa fa-check"></i> Icon Uploaded</div>
                   {{else}}
                     <div class="alert alert-danger upIcon"><i class="fa fa-warning"></i> Please add icon</div>
@@ -63,49 +60,53 @@
                   <small><i>* Should not exceed 300k</i></small>
                 </div>
               </div>
+
               <div class="form-group">
                 <label for="">
                   Token Symbol
                 </label>
-                <input value="{{contractAddress.symbol}}" name="symbol" type="text"
+                <input value="{{token.symbol}}" name="symbol" type="text"
                      class="form-control" readonly>
               </div>
+
               <div class="form-group">
                 <label for="">
                   Total Supply
                 </label>
-                <input value="{{contractAddress.totalSupply}}" name="totalSupply" type="text"
+                <input value="{{token.totalSupply}}" name="totalSupply" type="text"
                      class="form-control" readonly>
               </div>
+
               <div class="form-group">
                 <label for="">
                   Decimals
                 </label>
-                <input value="{{contractAddress.decimals}}" name="decimals" type="text"
+                <input value="{{token.decimals}}" name="decimals" type="text"
                      class="form-control" readonly>
               </div>
             </div>
+
             <div class="col-sm-8">
+
               <div class="form-group">
                 <label for="">
                   Name of ICO
                 </label>
-                <input value="{{contractAddress.name}}" name="name" type="text"
+                <input value="{{token.name}}" name="name" type="text"
                      class="input-lg form-control" readonly>
               </div>
-
 
               <div class="form-group">
                 <label for="">
                   Network
                 </label>
-                <select name="network" id="" class="form-control" value="{{contractAddress.network}}" readonly>
-                  {{#if contractAddress.network}}
-                    <option value="{{contractAddress.network}}">
+                <select name="network" id="" class="form-control" value="{{token.network}}" readonly>
+                  {{#if token.network}}
+                    <option value="{{token.network}}">
                       {{#if testnet}}
-                        Testnet ({{contractAddress.network}})
+                        Testnet ({{token.network}})
                       {{else}}
-                        Mainnet ({{contractAddress.network}})
+                        Mainnet ({{token.network}})
                       {{/if}}
                     </option>
                     {{else}}
@@ -116,8 +117,6 @@
                       <option value="1" selected>Mainnet</option>
                     {{/if}}
                   {{/if}}
-
-
                 </select>
               </div>
 
@@ -125,16 +124,15 @@
                 <label for="">
                   Owner of Smart Contract
                 </label>
-                <input value="{{contractAddress.owner}}" name="owner" type="text"
+                <input value="{{token.owner}}" name="owner" type="text"
                      class="form-control " {{hasVal "owner"}}>
               </div>
-
 
               <div class="form-group">
                 <label for="">
                   Authority
                 </label>
-                <input value="{{contractAddress.authority}}" name="authority" type="text"
+                <input value="{{token.authority}}" name="authority" type="text"
                      class="form-control " {{hasVal "authority"}}>
               </div>
 
@@ -142,7 +140,7 @@
                 <label for="">
                   Wanport
                 </label>
-                <input value="{{contractAddress.wanport}}" name="wanport" type="text"
+                <input value="{{token.wanport}}" name="wanport" type="text"
                      class="form-control " {{hasVal "wanport"}}>
               </div>
               <div class="form-group">
@@ -150,22 +148,21 @@
                   Description
                 </label>
                 <textarea name="description" id="" cols="30" rows="10"
-                      class="form-control " {{hasVal "description"}} >{{contractAddress.description}}</textarea>
+                      class="form-control " {{hasVal "description"}} >{{token.description}}</textarea>
               </div>
             </div>
           {{/if}}
 
-
         </div>
-        {{#if contractAddress}}
 
+        {{#if token}}
           <div class="form-group buttonbar text-right">
             <button type="submit" class="btn btn-primary btn-lg">Next <i class="fa fa-arrow-right"></i>
             </button>
             <a href="#"  class="btn reset btn-default btn-lg">Exit</a>
           </div>
-
         {{/if}}
+
       </form>
 
     </div>

@@ -9,23 +9,19 @@ import submit from './submit';
 import changeIcon from './changeIcon';
 
 Template.tokenForm.helpers({
-  contractAddress() {
+  token() {
     const addr = Session.get('contractAddress');
     if (addr) {
       return ICOTokens.findOne({ _id: addr });
     }
   },
 
-  addy() {
+  address() {
     return Session.get('contractAddress');
   },
 
   loading() {
     return Session.get('loading');
-  },
-
-  path() {
-    return Session.get('path');
   },
 
   testnet() {

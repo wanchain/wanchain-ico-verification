@@ -1,32 +1,28 @@
-import { pingExplorer, setVerifyUrl, verifyContractCode } from './contracts';
-import { getFile, getPath, getToken, removeToken } from './getFile';
-import { createAccount, removeUser, makeAdmin } from './user';
-import { getCode, validateContract } from './web3';
-import { parseContract } from './parse-smart-contract';
+import { pingExplorer } from './ping-explorer';
+import { setVerifyUrl } from './set-verify-url';
+import { validateContract } from './validate-contract';
+import { verifyContractCode } from './verify-contract-code';
+
 import { saveBlob, saveFile, saveJson } from '../../files/saveFile';
 import { createTar } from '../../files/createTar';
 
-Meteor.methods({
-  getFile,
-  getPath,
-  getToken,
-  removeToken,
+import { addUser, removeUser, makeAdmin } from './user';
 
+Meteor.methods({
+  // contracts
   pingExplorer,
   setVerifyUrl,
+  validateContract,
   verifyContractCode,
 
-  getCode,
-  validateContract,
-
-  parseContract,
-
+  // files
   saveBlob,
   saveFile,
   saveJson,
   createTar,
 
-  createAccount,
+  // users
+  addUser,
   removeUser,
   makeAdmin,
 });

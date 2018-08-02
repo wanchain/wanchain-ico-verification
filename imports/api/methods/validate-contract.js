@@ -5,17 +5,6 @@ import { instantiateWeb3 } from '../../utils/web3';
 import { saveFile } from '../../files/saveFile';
 import StandardAbi from '../../standard-abi';
 
-export function getCode(address, network) {
-  if (typeof address !== 'string') {
-    throw new Meteor.Error('address must be a string');
-  }
-
-  const addr = address.toUpperCase();
-  const web3 = instantiateWeb3(network);
-
-  return web3.eth.getCode(addr);
-};
-
 export function validateContract(address, network) {
   if (typeof address !== 'string') {
     throw new Meteor.Error('address must be a string');

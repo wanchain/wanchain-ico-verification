@@ -9,10 +9,6 @@ Session.set('network', 'testnet');
 
 Meteor.startup(function() {
   console.log('starting up client...', new Date().getTime())
-
-  Meteor.call('getPath', function(err, res) {
-    Session.set('path', res);
-  })
 });
 
 Deps.autorun(function() {

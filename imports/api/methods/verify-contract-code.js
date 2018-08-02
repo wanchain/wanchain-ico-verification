@@ -1,11 +1,7 @@
-import { Meteor } from 'meteor/meteor';
-import { HTTP } from 'meteor/http';
-
 import { ICOTokens } from '../collections/icotokens';
 import { instantiateWeb3 } from '../../utils/web3';
 import { saveFile } from '../../files/saveFile';
 import { createTar } from '../../files/createTar';
-import { encrypt } from '../../utils/crypto';
 
 function buildSource(token) {
   return {
@@ -71,7 +67,6 @@ export function verifyContractCode(address, network) {
       const blockchainCode = deployedCode.replace('0x', '').split('a165627a7a72305820')[0];
 
       console.log(blockchainCode);
-
       console.log(compiled.contracts.length);
 
       for (let i = 0; i < contractNames.length; i++) {
@@ -138,26 +133,3 @@ export function verifyContractCode(address, network) {
     });
   });
 };
-
-export function setVerifyUrl(address) {
-  const {
-    password,
-    explorerApiUrl,
-  } = Meteor.settings.env;
-
-  const encrypted = encrypt(address, address.toLowerCase() + password);
-  const verifyUrl = `${explorerApiUrl}/${address}/${encodeURIComponent(encrypted)}`;
-
-  ICOTokens.update({ _id: address }, {
-    $set: { verifyUrl },
-  });
-
-  return verifyUrl;
-};
-
-export function pingExplorer(address) {
-  const token = ICOTokens.findOne(address);
-  if (token && token.verifyUrl) {
-    return HTTP.get(token.verifyUrl);
-  }
-}

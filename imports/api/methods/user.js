@@ -7,7 +7,7 @@ import { encrypt } from '../../utils/crypto';
 
 // TODO: these methods should be restricted to only admin users
 
-export function createAccount(userData) {
+export function addUser(userData) {
   if (! Match.test(userData, Object)) {
     throw new Meteor.Error(413, 'User account must be an object');
   }
