@@ -1,4 +1,5 @@
 import { Meteor } from 'meteor/meteor';
+import { HTTP } from 'meteor/http';
 
 import { ICOTokens } from '../collections/icotokens';
 import { instantiateWeb3 } from '../../utils/web3';
