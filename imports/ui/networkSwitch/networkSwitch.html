@@ -1,13 +1,11 @@
 <template name="networkSwitch">
-    <select name="network" id="network" class="network">
-        {{#if network}}
-            <option value="testnet" selected>-- change network --</option>
-            <option value="mainnet" >Mainnet</option>
-            {{else}}
-            <option value="mainnet" selected>-- change network --</option>
-            <option value="testnet" >Testnet</option>
-
-        {{/if}}
-
-    </select>
+  <select name="network" id="network" class="network">
+    {{#if network}}
+      <option value="testnet" selected>-- change network --</option>
+      <option value="mainnet" >Mainnet</option>
+      {{else}}
+      <option value="mainnet" selected>-- change network --</option>
+      <option value="testnet" >Testnet</option>
+    {{/if}}
+  </select>
 </template>

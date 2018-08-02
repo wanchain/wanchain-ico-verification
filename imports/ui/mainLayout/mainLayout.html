@@ -1,9 +1,11 @@
 <template name="mainLayout">
-    {{>header}}
-    {{#if currentUser}}
-        {{> Template.dynamic template=content}}
-    {{else}}
-        {{>atForm}}
-    {{/if}}
-    {{> Template.dynamic template=public}}
+  {{>header}}
+
+  {{#if currentUser}}
+    {{> Template.dynamic template=content}}
+  {{else}}
+    {{>atForm}}
+  {{/if}}
+
+  {{> Template.dynamic template=public}}
 </template>

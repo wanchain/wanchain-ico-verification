@@ -1,33 +1,33 @@
 import { Template } from 'meteor/templating';
+import { Session } from 'meteor/session';
 
 import './networkSwitch.html';
 
 Template.networkSwitch.helpers({
-    'network':function(){
-        return Session.get('network') === "testnet";
-    }
+  network() {
+    return Session.get('network') === 'testnet';
+  }
 });
 
 Template.networkSwitch.events({
-    'change .network':function(event,template){
-        event.preventDefault();
-        var theVal = $(event.target).val();
-        console.log('changing network to '+theVal + '....');
-        var config = Meteor.settings.public.rpc[theVal]
-        web3.setProvider(config);
-        Session.set('network',theVal);
-        console.log('done.');
-    }
+  'change .network'(event, template) {
+    event.preventDefault();
+
+    const network = $(event.target).val();
+    Session.set('network', network);
+
+    console.log(`network changed to ${network}`);
+  }
 });
 
 Template.networkSwitch.onCreated(function () {
-    //add your statement here
+  //add your statement here
 });
 
 Template.networkSwitch.onRendered(function () {
-    //add your statement here
+  //add your statement here
 });
 
 Template.networkSwitch.onDestroyed(function () {
-    //add your statement here
+  //add your statement here
 });

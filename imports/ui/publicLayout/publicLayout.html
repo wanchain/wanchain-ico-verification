@@ -1,37 +1,28 @@
 <template name="publicLayout">
-    <div class="head-cont">
-        <div class="header-bar">
-            <div class="container">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <div class="theLogo">
-                            <a href="/">
-                                <img src="/assets/logo.png" alt="">
-                            </a>
-                        </div>
-
-                    </div>
-                    <div class="col-sm-6 text-right">
-
-                        <b>Address Validator</b>
-                        <br>
-                        Convert and/or Verify a Wanchain Address
-
-
-                            <!--{{#if currentUser}}-->
-                        <!--<a href="#" onclick="Meteor.logout()" class="btn btn-xs btn-dark"><i class="fa fa-user"></i> Logout</a>-->
-                        <!--<a href="/p/config"  class="btn btn-xs btn-dark"><i class="fa fa-cog"></i> Config</a>-->
-                            <!--{{/if}}-->
-                        <!--<div class="network">-->
-                        <!---->
-                        <!--</div>-->
-
-                    </div>
-                </div>
+  <div class="head-cont">
+    <div class="header-bar">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-6">
+            <div class="theLogo">
+              <a href="/">
+                <img src="/assets/logo.png" alt="">
+              </a>
             </div>
+          </div>
+          <div class="col-sm-6 text-right">
 
+            <b>Address Validator</b>
+            <br>
+
+            Convert and/or Verify a Wanchain Address
+
+          </div>
         </div>
+      </div>
     </div>
-    {{> Template.dynamic template=public}}
+  </div>
+
+  {{> Template.dynamic template=public}}
 
 </template>
