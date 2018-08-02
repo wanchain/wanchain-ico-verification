@@ -2,14 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { ICOTokens } from '../api/collections/icotokens';
 
 export function sendVerifiedICOs() {
-  return;
-
   _.each(ICOTokens.find({verified: true, explorersuccess: {$ne: true}}).fetch(), function (e) {
 
     Fiber(function () {
       console.log('sending ping to explorer for ', e._id);
       sleep(3000);
-      Meteor.call('pingExplorer', e._id, function (err, resp) {
+      Meteor.call('sendTokenToExplorer', e._id, function (err, resp) {
         var thestatus = resp.content.split('<dd>')[1].split('</dd>')[0];
 
         console.log('the status', thestatus)

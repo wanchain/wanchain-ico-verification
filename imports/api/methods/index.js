@@ -1,4 +1,4 @@
-import { pingExplorer } from './ping-explorer';
+import { sendTokenToExplorer } from './send-token-to-explorer';
 import { setVerifyUrl } from './set-verify-url';
 import { validateContract } from './validate-contract';
 import { verifyContractCode } from './verify-contract-code';
@@ -10,7 +10,7 @@ import { addUser, removeUser, makeAdmin } from './user';
 
 Meteor.methods({
   // contracts
-  pingExplorer,
+  sendTokenToExplorer,
   setVerifyUrl,
   validateContract,
   verifyContractCode,
