@@ -1,4 +1,5 @@
 import { ICOTokens } from '../../api/collections/icotokens';
+import { saveFile } from '../utils/saveFile';
 import getSwal from '../swal';
 
 const ValidImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
@@ -47,7 +48,7 @@ export default function(ev) {
       return;
     }
 
-    Meteor.saveFile(file, fileName);
+    saveFile(file, fileName);
 
     swal(getSwal(
       'Icon Saved',
