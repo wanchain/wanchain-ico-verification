@@ -1,11 +1,10 @@
-import CryptoJS from 'crypto-js';
-
 import { Meteor } from 'meteor/meteor';
 
 import { ICOTokens } from '../collections/icotokens';
 import { instantiateWeb3 } from '../../utils/web3';
 import { saveFile } from '../../files/saveFile';
 import { createTar } from '../../files/createTar';
+import { encrypt } from '../../utils/crypto';
 
 function buildSource(token) {
   return {
@@ -145,8 +144,8 @@ export function setVerifyUrl(address) {
     explorerApiUrl,
   } = Meteor.settings.env;
 
-  const encrypted = CryptoJS.AES.encrypt(address, address.toLowerCase() + password);
-  const verifyUrl = `${explorerApiUrl}/${address}/${encodeURIComponent(encrypted.toString())}`;
+  const encrypted = encrypt(address, address.toLowerCase() + password);
+  const verifyUrl = `${explorerApiUrl}/${address}/${encodeURIComponent(encrypted)}`;
 
   ICOTokens.update({ _id: address }, {
     $set: { verifyUrl },

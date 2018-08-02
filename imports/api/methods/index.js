@@ -1,6 +1,6 @@
 import { pingExplorer, setVerifyUrl, verifyContractCode } from './contracts';
 import { getFile, getPath, getToken, removeToken } from './getFile';
-import { createAccount, decryptIt, removeUser, makeAdmin } from './user';
+import { createAccount, removeUser, makeAdmin } from './user';
 import { getCode, validateContract } from './web3';
 import { parseContract } from './parse-smart-contract';
 import { saveBlob, saveFile, saveJson } from '../../files/saveFile';
@@ -27,7 +27,6 @@ Meteor.methods({
   createTar,
 
   createAccount,
-  decryptIt,
   removeUser,
   makeAdmin,
 });

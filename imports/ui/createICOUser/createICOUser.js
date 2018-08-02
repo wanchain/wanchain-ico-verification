@@ -1,11 +1,15 @@
+import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
+import { decrypt } from '../../utils/crypto'
 
 import './createICOUser.html';
 
 Template.createICOUser.helpers({
   users() {
+    const query = { 'profile.icoUser': true };
     const opts = { sort: { 'profile.createdOn': -1 }};
-    return Meteor.users.find({ 'profile.icoUser': true }, opts);
+
+    return Meteor.users.find(query, opts);
   }
 });
 
@@ -13,53 +17,49 @@ Template.createICOUser.events({
   'submit .createUser'(event, template) {
     event.preventDefault();
 
-    var formObj = $(event.target).serializeArray();
-    var uObj = {};
+    const formFields = $(event.target).serializeArray();
 
-    _.each(formObj,function(e) {
-      uObj[e.name] = e.value;
+    const user = {
+      profile: {
+        icoUser: true,
+        createdOn: new Date(),
+      }
+    };
+
+    formFields.forEach(function(field) {
+      user[field.name] = field.value;
     });
 
-
-
-    uObj.profile = {};
-    uObj.profile.icoUser=true;
-    uObj.profile.createdOn = new Date();
-
-    console.log('userObj 2',uObj);
-
-    // userObj.password='H&@UxC{rbUeKL~4e';
-    Meteor.call('createAccount',uObj,function(err,resp) {
-      console.log(resp);
+    Meteor.call('createAccount', user, function(err, res) {
+      console.log(res);
     })
   },
 
   'click .decrypt'(event, template) {
     event.preventDefault();
 
-    var self = this;
-    var encKey = prompt('enter encryption password');
+    // TODO: this should not be a prompt since the password is not masked;
+    // instead it should be a popup form with an input with type "password"
+    const key = prompt('Enter encryption password');
+    const decrypted = decrypt(this.profile.password, key);
 
-    Meteor.call('decryptIt',self.profile.password,encKey,function(err,resp) {
-      console.log(resp);
-      if (resp) {
-        alert('password: '+resp)
-      }
-      else {
-        alert('invalid decryption password')
-      }
-    });
+    if (decrypted) {
+      alert('password: ' + decrypted);
+    }
+    else {
+      alert('invalid decryption password');
+    }
   }
 });
 
-Template.createICOUser.onCreated(function () {
+Template.createICOUser.onCreated(function() {
   Meteor.subscribe('users');
 });
 
-Template.createICOUser.onRendered(function () {
+Template.createICOUser.onRendered(function() {
   //add your statement here
 });
 
-Template.createICOUser.onDestroyed(function () {
+Template.createICOUser.onDestroyed(function() {
   //add your statement here
 });

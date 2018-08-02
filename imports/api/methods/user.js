@@ -1,42 +1,31 @@
-import CryptoJS from 'crypto-js';
-
 import { Meteor } from 'meteor/meteor';
+import { Match } from 'meteor/check';
+import { Accounts } from 'meteor/accounts-base';
 import { RandomWord } from 'meteor/augustnagro:random-word';
 
-export function createAccount(userData){
-  userData.password = RandomWord.get()+RandomWord.get();
+import { encrypt } from '../../utils/crypto';
 
-  var thePassword = Meteor.settings.env.password;
+// TODO: these methods should be restricted to only admin users
 
-  var encrypted = CryptoJS.AES.encrypt(userData.password,thePassword);
+export function createAccount(userData) {
+  if (! Match.test(userData, Object)) {
+    throw new Meteor.Error(413, 'User account must be an object');
+  }
 
-  userData.profile.password = encrypted.toString();
+  const key = Meteor.settings.env.password;
 
-  userData.profile.p = userData.password;
-
-  console.log('encrypted',encrypted.toString());
-
-  var decrypted  = CryptoJS.AES.decrypt(encrypted.toString(), thePassword).toString(CryptoJS.enc.Utf8);
-
-  console.log('decrypted',decrypted);
+  userData.password = RandomWord.get() + RandomWord.get();
+  userData.profile.password = encrypt(userData.password, key);
 
   userData._id = Accounts.createUser(userData);
 
-  return userData
+  return userData;
 }
 
-export function decryptIt(encrypted,encPass){
-  var decrypted  = CryptoJS.AES.decrypt(encrypted, encPass).toString(CryptoJS.enc.Utf8);
-
-  console.log('decrypted',decrypted);
-
-  return decrypted;
+export function removeUser(userId) {
+  return Meteor.users.remove({ _id: userId });
 }
 
-export function removeUser(userId){
-  return Meteor.users.remove({_id:userId})
-}
-
-export function makeAdmin(userId){
-  return Meteor.users.update({_id:userId},{$set:{'profile.admin':true}})
+export function makeAdmin(userId) {
+  return Meteor.users.update({ _id: userId }, { $set: { 'profile.admin': true }});
 }
