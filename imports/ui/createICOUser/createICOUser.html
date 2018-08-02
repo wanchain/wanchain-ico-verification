@@ -1,42 +1,42 @@
 <template name="createICOUser">
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">Create ICO User</div>
-                <div class="card-body">
-                    <form class="createUser">
-                        <div class="form-group">
-                            <label for="">Username</label>
-                            <input type="text" name="username" class="form-control">
-                        </div>
-                        <div class="form-group">
-                            <button class="btn btn-primary">Create ICO User</button>
-                        </div>
-                    </form>
-                </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">Create ICO User</div>
+        <div class="card-body">
+          <form class="createUser">
+            <div class="form-group">
+              <label for="">Username</label>
+              <input type="text" name="username" class="form-control">
             </div>
-        </div>
-    </div>
-    <hr>
-
-    <div class="row">
-        <div class="col-sm-12">
-            <div class="card">
-                <div class="card-header">Active ICO Users</div>
-                <div class="card-body">
-
-                    {{#each users}}
-                    <div class="list-group-item">
-                        <div><code>{{_id}}</code></div>
-                        <div>username: {{username}} </div>
-                        <div>password (encrypted): {{profile.password}} </div>
-                        <br>
-                        <div><a href="#" class="btn  btn-xs btn-dark decrypt">decrypt password</a></div>
-                    </div>
-                    {{/each}}
-                </div>
+            <div class="form-group">
+              <button class="btn btn-primary">Create ICO User</button>
             </div>
+          </form>
         </div>
+      </div>
     </div>
+  </div>
+  <hr>
+
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card">
+        <div class="card-header">Active ICO Users</div>
+        <div class="card-body">
+
+          {{#each users}}
+          <div class="list-group-item">
+            <div><code>{{_id}}</code></div>
+            <div>username: {{username}} </div>
+            <div>password (encrypted): {{profile.password}} </div>
+            <br>
+            <div><a href="#" class="btn  btn-xs btn-dark decrypt">decrypt password</a></div>
+          </div>
+          {{/each}}
+        </div>
+      </div>
+    </div>
+  </div>
 
 </template>

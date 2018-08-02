@@ -1,6 +1,6 @@
 import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
-import { ICOTokens } from '../../startup/lib/collections';
+import { ICOTokens } from '../../api/collections/icotokens';
 
 import './tokenForm.html';
 

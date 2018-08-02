@@ -3,7 +3,7 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 import Web3 from 'web3';
 
-import { ICOTokens } from '../../startup/lib/collections';
+import { ICOTokens } from '../../api/collections/icotokens';
 
 import './contractVerifier.html';
 

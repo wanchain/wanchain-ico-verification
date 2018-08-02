@@ -1,5 +1,6 @@
 import { Meteor } from 'meteor/meteor';
-import { ICOTokens, ToolConfig } from '../imports/startup/lib/collections.js';
+import { ICOTokens } from '../collections/icotokens';
+import { ToolConfig } from '../collections/toolconfig';
 
 Meteor.publish('tokens', function(contractAddress) {
   if (contractAddress) {

@@ -2,16 +2,10 @@ import CryptoJS from 'crypto-js';
 
 import { Meteor } from 'meteor/meteor';
 
-import { ICOTokens } from '../../imports/startup/lib/collections';
-import { instantiateWeb3 } from '../../imports/utils/web3';
-import { saveFile } from '../../imports/files/saveFile';
-import { createTar } from '../../imports/files/createTar';
-
-Meteor.methods({
-  pingExplorer,
-  setVerifyUrl,
-  verifyContractCode,
-});
+import { ICOTokens } from '../collections/icotokens';
+import { instantiateWeb3 } from '../../utils/web3';
+import { saveFile } from '../../files/saveFile';
+import { createTar } from '../../files/createTar';
 
 function buildSource(token) {
   return {
@@ -55,7 +49,7 @@ function buildSource(token) {
   };
 }
 
-function verifyContractCode(address, network) {
+export function verifyContractCode(address, network) {
   const web3 = instantiateWeb3(network);
   const token = ICOTokens.findOne(address);
 
@@ -145,7 +139,7 @@ function verifyContractCode(address, network) {
   });
 };
 
-function setVerifyUrl(address) {
+export function setVerifyUrl(address) {
   const {
     password,
     explorerApiUrl,
@@ -161,7 +155,7 @@ function setVerifyUrl(address) {
   return verifyUrl;
 };
 
-function pingExplorer(address) {
+export function pingExplorer(address) {
   const token = ICOTokens.findOne(address);
   if (token && token.verifyUrl) {
     return HTTP.get(token.verifyUrl);

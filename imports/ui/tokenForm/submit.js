@@ -1,4 +1,4 @@
-import { ICOTokens } from '../../startup/lib/collections';
+import { ICOTokens } from '../../api/collections/icotokens';
 import getSwal from '../swal';
 
 export default function(event, template) {

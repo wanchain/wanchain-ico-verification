@@ -1,16 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import { ICOTokens } from '../../imports/startup/lib/collections';
-import { instantiateWeb3 } from '../../imports/utils/web3';
-import { saveFile } from '../../imports/files/saveFile';
-import StandardAbi from '../../imports/standard-abi';
+import { ICOTokens } from '../collections/icotokens';
+import { instantiateWeb3 } from '../../utils/web3';
+import { saveFile } from '../../files/saveFile';
+import StandardAbi from '../../standard-abi';
 
-Meteor.methods({
-  getCode,
-  validateContract,
-});
-
-function getCode(address, network) {
+export function getCode(address, network) {
   if (typeof address !== 'string') {
     throw new Meteor.Error('address must be a string');
   }
@@ -21,7 +16,7 @@ function getCode(address, network) {
   return web3.eth.getCode(addr);
 };
 
-function validateContract(address, network) {
+export function validateContract(address, network) {
   if (typeof address !== 'string') {
     throw new Meteor.Error('address must be a string');
   }

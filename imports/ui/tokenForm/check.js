@@ -2,7 +2,7 @@ import Web3 from 'web3';
 
 import { Session } from 'meteor/session';
 
-import { ICOTokens } from '../../startup/lib/collections';
+import { ICOTokens } from '../../api/collections/icotokens';
 import StandardAbi from '../../standard-abi';
 import getSwal from '../swal';
 
