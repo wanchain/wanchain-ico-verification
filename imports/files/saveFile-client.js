@@ -21,7 +21,7 @@ Meteor.saveFile = function(blob, name, type, callback) {
 
   fileReader.onload = function(file) {
     console.log('result', file);
-    Meteor.call('saveBlob', file.target.result, name, encoding, callback);
+    Meteor.call('saveFileWithEncoding', file.target.result, name, encoding, callback);
   }
 
   fileReader[method](blob);

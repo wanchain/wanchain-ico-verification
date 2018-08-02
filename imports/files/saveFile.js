@@ -5,7 +5,24 @@ import writeJsonFile from 'write-json-file';
 import { Meteor } from 'meteor/meteor';
 import { getFilesPath } from '../../imports/utils/filesPath';
 
-const saveBlob = function(data, name, encoding) {
+const saveFile = function(data, name) {
+  const filesPath = getFilesPath();
+  const fullPath = path.join(filesPath, name);
+
+  return new Promise((resolve, reject) => {
+    fs.writeFile(fullPath, data, function(err, res) {
+      if (err) {
+        console.log(`Failed to save file: ${fullPath}`, err);
+        reject(new Meteor.Error(500, `Failed to save file: ${fullPath}`, err));
+      } else {
+        console.log(`The file ${name} was saved to ${fullPath}`);
+        resolve(res);
+      }
+    });
+  });
+};
+
+const saveFileWithEncoding = function(data, name, encoding) {
   encoding = encoding || 'binary';
 
   const filesPath = getFilesPath();
@@ -18,23 +35,6 @@ const saveBlob = function(data, name, encoding) {
         reject(new Meteor.Error(500, `Failed to save file: ${fullPath}`, err));
       } else {
         console.log(`The file ${name} (${encoding}) was saved to ${fullPath}`);
-        resolve(res);
-      }
-    });
-  });
-};
-
-const saveFile = function(data, name) {
-  const filesPath = getFilesPath();
-  const fullPath = path.join(filesPath, name);
-
-  return new Promise((resolve, reject) => {
-    fs.writeFile(fullPath, data, function(err, res) {
-      if (err) {
-        console.log(`Failed to save file: ${fullPath}`, err);
-        reject(new Meteor.Error(500, `Failed to save file: ${fullPath}`, err));
-      } else {
-        console.log(`The file ${name} was saved to ${fullPath}`);
         resolve(res);
       }
     });
@@ -57,7 +57,7 @@ const saveJson = function(data, name) {
 };
 
 export {
-  saveBlob,
   saveFile,
+  saveFileWithEncoding,
   saveJson,
 };
