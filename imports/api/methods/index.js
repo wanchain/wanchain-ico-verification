@@ -6,7 +6,7 @@ import { verifyContractCode } from './verify-contract-code';
 import { saveFile, saveFileWithEncoding, saveJson } from '../../files/saveFile';
 import { createTar } from '../../files/createTar';
 
-import { addUser, removeUser, makeAdmin } from './user';
+import { addUser, removeUser, makeAdmin, revokeAdmin } from './user';
 import { isAdmin, isIcoUser } from '../../utils/users';
 
 Meteor.methods({
@@ -26,6 +26,7 @@ Meteor.methods({
   addUser: requireAdmin(addUser),
   removeUser: requireAdmin(removeUser),
   makeAdmin: requireAdmin(makeAdmin),
+  revokeAdmin: requireAdmin(revokeAdmin),
 });
 
 function requireLoggedIn(func) {

@@ -28,3 +28,9 @@ export function makeAdmin(userId) {
     $set: { 'profile.admin': true }
   });
 }
+
+export function revokeAdmin(userId) {
+  return Meteor.users.update({ _id: userId }, {
+    $set: { 'profile.admin': false }
+  });
+}
