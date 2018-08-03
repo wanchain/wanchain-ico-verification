@@ -4,9 +4,10 @@
     "explorerApiUrl": "xxxxxxxxxx"
   },
   "public": {
+    "icoFilesUrl": "file:///home/jgoyette/uploads/",
     "rpc":{
-      "testnet":"xxxxxxx",
-      "mainnet":"xxxxxxx"
+      "testnet":"http://localhost:8545",
+      "mainnet":"http://localhost:28545"
     },
     "users": {
       "forbidAccountCreation": false

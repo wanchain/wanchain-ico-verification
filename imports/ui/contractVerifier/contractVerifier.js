@@ -21,6 +21,11 @@ Template.contractVerifier.helpers({
   network() {
     return Session.get('network');
   },
+  icoFileUrl() {
+    const addr = Session.get('contractAddress');
+    const baseUrl = Meteor.settings.public.icoFilesUrl;
+    return `${baseUrl}${addr}.tar`;
+  },
   conf() {
     const network = Session.get('network');
     return ToolConfig.find({ _id: network }).fetch();
