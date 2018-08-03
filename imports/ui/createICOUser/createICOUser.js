@@ -31,7 +31,7 @@ Template.createICOUser.events({
     });
 
     Meteor.call('addUser', user, function(err, res) {
-      console.log(res);
+      console.log(err, res);
     })
   },
 
