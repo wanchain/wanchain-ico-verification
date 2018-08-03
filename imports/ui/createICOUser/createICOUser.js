@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import { decrypt } from '../../utils/crypto'
+import Crypto from '../../utils/crypto'
 
 import './createICOUser.html';
 
@@ -41,7 +41,7 @@ Template.createICOUser.events({
     // TODO: this should not be a prompt since the password is not masked;
     // instead it should be a popup form with an input with type "password"
     const key = prompt('Enter encryption password');
-    const decrypted = decrypt(this.profile.password, key);
+    const decrypted = Crypto.decrypt(this.profile.password, key);
 
     if (decrypted) {
       alert('password: ' + decrypted);

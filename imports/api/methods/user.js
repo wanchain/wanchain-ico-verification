@@ -3,7 +3,7 @@ import { Match } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
 import { RandomWord } from 'meteor/augustnagro:random-word';
 
-import { encrypt } from '../../utils/crypto';
+import Crypto from '../../utils/crypto';
 
 // TODO: these methods should be restricted to only admin users
 
@@ -15,7 +15,7 @@ export function addUser(userData) {
   const key = Meteor.settings.env.password;
 
   userData.password = RandomWord.get() + RandomWord.get();
-  userData.profile.password = encrypt(userData.password, key);
+  userData.profile.password = Crypto.encrypt(userData.password, key);
 
   userData._id = Accounts.createUser(userData);
 

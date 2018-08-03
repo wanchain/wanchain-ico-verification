@@ -2,7 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 
 import { ICOTokens } from '../collections/icotokens';
-import { encrypt } from '../../utils/crypto';
+import Crypto from '../../utils/crypto';
 import Logger from '../../utils/logger';
 
 export function setVerifyUrl(address) {
@@ -16,7 +16,7 @@ export function setVerifyUrl(address) {
     explorerApiUrl,
   } = Meteor.settings.env;
 
-  const encrypted = encrypt(address, address.toLowerCase() + password);
+  const encrypted = Crypto.encrypt(address, address.toLowerCase() + password);
   const verifyUrl = `${explorerApiUrl}/${address}/${encodeURIComponent(encrypted)}`;
 
   ICOTokens.update({ _id: address }, {
