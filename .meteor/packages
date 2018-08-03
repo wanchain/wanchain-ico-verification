@@ -32,9 +32,8 @@ silentcicero:solc
 patrickml:swal
 cfs:http-methods@0.0.30
 accounts-password@1.5.1
-useraccounts:core
-useraccounts:bootstrap
 numeral:numeral
 augustnagro:random-word
 percolate:synced-cron
 underscore
+useraccounts:bootstrap
