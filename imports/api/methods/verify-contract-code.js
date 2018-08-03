@@ -4,6 +4,7 @@ import { ICOTokens } from '../collections/icotokens';
 import { instantiateWeb3 } from '../../utils/web3';
 import { saveFile } from '../../files/saveFile';
 import { createTar } from '../../files/createTar';
+import Logger from '../../utils/logger';
 
 function buildSource(token) {
   return {
@@ -61,7 +62,7 @@ export function verifyContractCode(address, network) {
 
     // check for compile errors
     if (! compiled.contracts) {
-      console.log('compile error', compiled);
+      Logger.log('compile error', compiled);
       return reject();
     }
 
@@ -69,7 +70,7 @@ export function verifyContractCode(address, network) {
 
     // reject if no contracts were generated
     if (! contractNames.length) {
-      console.log('no contracts compiled');
+      Logger.log('no contracts compiled');
       return reject();
     }
 
@@ -84,13 +85,13 @@ export function verifyContractCode(address, network) {
         let compiledCode = compiled.contracts[contractName].runtimeBytecode.split('a165627a7a72305820')[0];
 
         // if (compiledCode.split('f300').length > 1) {
-        //   console.log('splitting on f300');
+        //   Logger.log('splitting on f300');
         //   compiledCode = compiledCode.split('f300')[1];
         // }
 
         if (compiledCode === blockchainCode) {
 
-          console.log('it matched!');
+          Logger.log('it matched!');
           matched = true;
 
           ICOTokens.update({ _id: address }, {
@@ -104,10 +105,10 @@ export function verifyContractCode(address, network) {
           const saveAbi = saveFile(token.abi, `${address}.abi`);
 
           Promise.all([ saveSol, saveAbi ]).catch(err => {
-            console.log('Error saving sol/abi', err);
+            Logger.log('Error saving sol/abi', err);
             reject(err);
           }).then(() => createTar(address)).catch(err => {
-            console.log('Error saving tar', err);
+            Logger.log('Error saving tar', err);
             reject(err);
           }).then(res => {
             resolve();
@@ -115,7 +116,7 @@ export function verifyContractCode(address, network) {
 
         } else {
 
-          console.log('no match......')
+          Logger.log('no match......')
 
           ICOTokens.update({ _id: address }, {
             $set: {
@@ -130,7 +131,7 @@ export function verifyContractCode(address, network) {
         }
       }
     }).catch(err => {
-      console.log(err);
+      Logger.log(err);
       reject(err);
     });
   });

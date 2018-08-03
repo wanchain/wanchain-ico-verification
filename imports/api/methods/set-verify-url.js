@@ -3,10 +3,11 @@ import { Match } from 'meteor/check';
 
 import { ICOTokens } from '../collections/icotokens';
 import { encrypt } from '../../utils/crypto';
+import Logger from '../../utils/logger';
 
 export function setVerifyUrl(address) {
   if (! address || ! Match.test(address, String)) {
-    console.log('Error in setVerifyUrl: address bad format', address);
+    Logger.log('Error in setVerifyUrl: address bad format', address);
     return false;
   }
 

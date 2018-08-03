@@ -4,6 +4,7 @@ import { ICOTokens } from '../collections/icotokens';
 import { instantiateWeb3 } from '../../utils/web3';
 import { saveFile } from '../../files/saveFile';
 import StandardAbi from '../../standard-abi';
+import Logger from '../../utils/logger';
 
 export function validateContract(address, network) {
   if (typeof address !== 'string') {
@@ -14,12 +15,12 @@ export function validateContract(address, network) {
 
   return new Promise(function(resolve, reject) {
     web3.eth.getCode(address.toUpperCase()).catch(err => {
-      console.log('Error getting code from address:', address, network, err);
+      Logger.log('Error getting code from address:', address, network, err);
       reject(new Meteor.Error(404, 'notfound'));
     }).then(code => {
 
       if (! code || code.length < 4) {
-        console.log('Empty code from address:', address, network);
+        Logger.log('Empty code from address:', address, network);
         reject(new Meteor.Error(404, 'notfound'));
         return;
       }
@@ -43,7 +44,7 @@ export function validateContract(address, network) {
       const tokenContract = new web3.eth.Contract(StandardAbi, address.toUpperCase());
 
       if (! tokenContract) {
-        console.log('Could not get contract for address:', address, network);
+        Logger.log('Could not get contract for address:', address, network);
         reject(new Meteor.Error(412, 'invalid'));
       }
 
@@ -71,7 +72,7 @@ export function validateContract(address, network) {
       }).catch(err => {
         ICOTokens.remove({ _id: address });
 
-        console.log('Error getting contract details from address:', address, network, err);
+        Logger.log('Error getting contract details from address:', address, network, err);
         reject(new Meteor.Error(412, 'invalid'));
       });
     });
