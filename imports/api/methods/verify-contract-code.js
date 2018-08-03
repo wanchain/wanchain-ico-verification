@@ -1,3 +1,5 @@
+import solc from 'solc';
+
 import { ICOTokens } from '../collections/icotokens';
 import { instantiateWeb3 } from '../../utils/web3';
 import { saveFile } from '../../files/saveFile';
@@ -52,13 +54,22 @@ export function verifyContractCode(address, network) {
   const source = buildSource(token);
   const optimized = token.optimized ? 1 : 0;
   const compiled = solc.compile(source, optimized); // 1 activates the optimiser
-  const contractNames = Object.keys(compiled.contracts);
 
   let matched = false;
 
   return new Promise((resolve, reject) => {
 
+    // check for compile errors
+    if (! compiled.contracts) {
+      console.log('compile error', compiled);
+      return reject();
+    }
+
+    const contractNames = Object.keys(compiled.contracts);
+
+    // reject if no contracts were generated
     if (! contractNames.length) {
+      console.log('no contracts compiled');
       return reject();
     }
 
@@ -66,27 +77,16 @@ export function verifyContractCode(address, network) {
 
       const blockchainCode = deployedCode.replace('0x', '').split('a165627a7a72305820')[0];
 
-      console.log(blockchainCode);
-      console.log(compiled.contracts.length);
-
       for (let i = 0; i < contractNames.length; i++) {
         if (matched) continue;
 
-        console.log(i);
-
         const contractName = contractNames[i];
-        let compiledCode = compiled.contracts[contractName].bytecode.split('a165627a7a72305820')[0];
-
-        console.log(contractName);
-        console.log(compiled.contracts[contractName].bytecode);
+        let compiledCode = compiled.contracts[contractName].runtimeBytecode.split('a165627a7a72305820')[0];
 
         // if (compiledCode.split('f300').length > 1) {
         //   console.log('splitting on f300');
         //   compiledCode = compiledCode.split('f300')[1];
         // }
-
-        // console.log('1', blockchainCode);
-        // console.log('2', compiledCode);
 
         if (compiledCode === blockchainCode) {
 
@@ -102,9 +102,11 @@ export function verifyContractCode(address, network) {
 
           const saveSol = saveFile(token.solidity, `${address}.sol`);
           const saveAbi = saveFile(token.abi, `${address}.abi`);
-          const saveTar = createTar(address);
 
-          Promise.all([ saveSol, saveAbi ]).then(saveTar).catch(err => {
+          Promise.all([ saveSol, saveAbi ]).catch(err => {
+            console.log('Error saving sol/abi', err);
+            reject(err);
+          }).then(() => createTar(address)).catch(err => {
             console.log('Error saving tar', err);
             reject(err);
           }).then(res => {

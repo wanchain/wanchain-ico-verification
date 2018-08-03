@@ -1,11 +1,11 @@
 import fs from 'fs';
 import path from 'path';
-import tar from 'tar';
 import archiver from 'archiver';
 
+import { ICOTokens } from '../api/collections/icotokens';
 import { getFilesPath } from '../utils/filesPath';
 
-const createTar = function(address) {
+export function createTar(address) {
 
   return new Promise((resolve, reject) => {
 
@@ -15,6 +15,11 @@ const createTar = function(address) {
 
     const output = fs.createWriteStream(`${addrPath}.tar`);
     const archive = archiver('tar', {});
+
+    output.on('error', function(err) {
+      console.log('output error', err);
+      reject(err);
+    });
 
     output.on('close', function() {
       console.log(archive.pointer() + ' total bytes');
@@ -29,13 +34,14 @@ const createTar = function(address) {
     archive.on('warning', function(err) {
       if (err.code === 'ENOENT') {
         // log warning
-        console.log(err);
+        console.log('archiver warning', err);
       } else {
-        reject(err);
+        // reject(err);
       }
     });
 
     archive.on('error', function(err) {
+      console.log('archiver error', err);
       reject(err);
     });
 
@@ -51,8 +57,4 @@ const createTar = function(address) {
 
     archive.finalize();
   });
-};
-
-export {
-  createTar,
 };
