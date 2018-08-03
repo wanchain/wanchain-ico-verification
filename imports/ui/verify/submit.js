@@ -2,6 +2,7 @@ import { Session } from 'meteor/session';
 
 import Hex from '../../utils/hex';
 import WanTools from '../../utils/wantools';
+import swal from '../utils/swal';
 
 export function submit(event, template) {
   event.preventDefault();
@@ -16,18 +17,18 @@ export function submit(event, template) {
     return false;
   }
   else if (hash.length !== 40) {
-    sweetAlert({
-      title: "Invalid Address Length",
-      text: "The address you entered is not valid.",
-      type: "warning",
-      button: "Try Again",
+    swal({
+      title: 'Invalid Address Length',
+      text: 'The address you entered is not valid.',
+      button: 'Try Again',
     });
+
     return false;
   }
 
   const wanAddress = WanTools.addressChecksum(address);
 
-  if (action === "verify") {
+  if (action === 'verify') {
     Session.set('verifyAttempt', true);
 
     if (Session.get('wanchainAddress') == wanAddress) {

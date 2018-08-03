@@ -2,7 +2,7 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 
 import { ICOTokens } from '../../api/collections/icotokens';
-import getSwal from '../utils/swal';
+import swal from '../utils/swal';
 
 import './contractForm.html';
 
@@ -61,11 +61,11 @@ Template.contractForm.events({
 
       Meteor.call('saveFile', solidity, fileName);
 
-      swal(getSwal(
-        'Solidity Code Saved',
-        'Now add your ABI Constructor Arguments',
-        'success',
-      ), function() {
+      swal({
+        title: 'Solidity Code Saved',
+        text: 'Now add your ABI Constructor Arguments',
+        icon: 'success',
+      }).then(() => {
         window.scroll({
           top: 950,
           left: 0,

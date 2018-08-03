@@ -1,5 +1,5 @@
 import { ICOTokens } from '../../api/collections/icotokens';
-import getSwal from '../utils/swal';
+import swal from '../utils/swal';
 
 export default function(event, template) {
   event.preventDefault();
@@ -9,10 +9,10 @@ export default function(event, template) {
   const token = ICOTokens.findOne(address);
 
   if (! token || ! token.icon) {
-    swal(getSwal(
-      'Missing Icon',
-      'You must upload an icon',
-    ));
+    swal({
+      title: 'Missing Icon',
+      text: 'You must upload an icon',
+    });
 
     return false;
   }
@@ -36,9 +36,9 @@ export default function(event, template) {
 
   $('#myTab a[href="#profile"]').tab('show');
 
-  // swal(getSwal(
-  //   'Token Info Saved',
-  //   'Lets add your contract code!',
-  //   'success',
-  // ));
+  // swal({
+  //   title: 'Token Info Saved',
+  //   text: 'Lets add your contract code!',
+  //   type: 'success',
+  // });
 };

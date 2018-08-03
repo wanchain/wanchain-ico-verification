@@ -4,7 +4,7 @@ import { Session } from 'meteor/session';
 
 import { ICOTokens } from '../../api/collections/icotokens';
 import StandardAbi from '../../standard-abi';
-import getSwal from '../utils/swal';
+import swal from '../utils/swal';
 
 export default function(event, template) {
   Session.set('loading', false);
@@ -30,10 +30,10 @@ export default function(event, template) {
       message: '<i class="fa  fa-warning"></i> the address you entered is not a valid address',
     });
 
-    swal(getSwal(
-      'Invalid Address',
-      'The address you entered is not a valid address',
-    ));
+    swal({
+      title: 'Invalid Address',
+      text: 'The address you entered is not a valid address',
+    });
 
     return;
   }
@@ -49,10 +49,10 @@ export default function(event, template) {
           message: '<i class="fa fa-warning"></i> the address you entered is not a valid token contract',
         });
 
-        swal(getSwal(
-          'Invalid Contract',
-          'The address you entered is not a valid token contract',
-        ));
+        swal({
+          title: 'Invalid Contract',
+          text: 'The address you entered is not a valid token contract',
+        });
       }
       else {
         Session.set('loading', {
@@ -60,10 +60,10 @@ export default function(event, template) {
           message: '<i class="fa fa-warning"></i> contract not found',
         });
 
-        swal(getSwal(
-          'Contract Not Found',
-          'The contract was not found',
-        ));
+        swal({
+          title: 'Contract Not Found',
+          text: 'The contract was not found',
+        });
       }
 
       return;

@@ -1,6 +1,6 @@
 import { ICOTokens } from '../../api/collections/icotokens';
 import { saveFile } from '../utils/saveFile';
-import getSwal from '../utils/swal';
+import swal from '../utils/swal';
 
 const ValidImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 
@@ -32,29 +32,29 @@ export default function(ev) {
     file.name = fileName;
 
     if ($.inArray(file.type, ValidImageTypes) < 0) {
-      swal(getSwal(
-        'Invalid Icon Format',
-        `We only accept jpeg, png, jpg. Your file is ${iconExtension}`,
-      ));
+      swal({
+        title: 'Invalid Icon Format',
+        text: `We only accept jpeg, png, jpg. Your file is ${iconExtension}`,
+      });
 
       return;
     }
     else if ((file.size / 1000) >= 301) {
-      swal(getSwal(
-        'Icon Too Big',
-        `The max image size for icons is 300k. Your image is ${parseInt(file.size / 1000)}k`,
-      ));
+      swal({
+        title: 'Icon Too Big',
+        text: `The max image size for icons is 300k. Your image is ${parseInt(file.size / 1000)}k`,
+      });
 
       return;
     }
 
     saveFile(file, fileName);
 
-    swal(getSwal(
-      'Icon Saved',
-      'Your icon has been saved!',
-      'success',
-    ));
+    swal({
+      title: 'Icon Saved',
+      text: 'Your icon has been saved!',
+      type: 'success',
+    });
 
     getBase64(address, file);
 

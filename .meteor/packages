@@ -29,7 +29,6 @@ session@1.1.7
 silentcicero:solc-compiler
 alexwine:bootstrap-4
 silentcicero:solc
-patrickml:swal
 cfs:http-methods@0.0.30
 accounts-password@1.5.1
 numeral:numeral

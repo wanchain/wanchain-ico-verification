@@ -1,12 +1,9 @@
-export default getSwal = function(title, text, type) {
-  if (! type) type = 'warning';
+import swal from 'sweetalert';
 
-  return {
-    title,
-    text,
-    type,
-    confirmButtonColor: '#dd6b55',
-    cancelButtonColor: '#d44',
-    closeOnConfirm: true,
-  };
+const DEFAULT_OPTS = {
+  icon: 'warning',
+};
+
+export default function(options) {
+  return swal(Object.assign(DEFAULT_OPTS, options));
 }
