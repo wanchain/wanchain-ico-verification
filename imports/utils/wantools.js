@@ -1,7 +1,11 @@
 import Web3 from 'web3';
 import Hex from './hex';
 
-export function wanAddressChecksum(address) {
+export default WanTools = {
+  addressChecksum,
+}
+
+function addressChecksum(address) {
   const web3 = new Web3();
 
   const lower = Hex.stripHexPrefix(address).toLowerCase();

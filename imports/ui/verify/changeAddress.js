@@ -1,5 +1,5 @@
 import { Session } from 'meteor/session';
-import { wanAddressChecksum } from '../../utils/wanAddressChecksum';
+import WanTools from '../../utils/wantools';
 
 export function changeAddress(event, template) {
   Session.set('wanchainAddress', false);
@@ -17,7 +17,7 @@ export function changeAddress(event, template) {
     console.log('is upper');
   } else {
     const action = 'verify';
-    const wanchainAddress = wanAddressChecksum(address);
+    const wanchainAddress = WanTools.addressChecksum(address);
 
     Session.set('verifyAttempt', true);
 

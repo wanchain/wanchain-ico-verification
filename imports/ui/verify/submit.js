@@ -1,7 +1,7 @@
 import { Session } from 'meteor/session';
 
 import Hex from '../../utils/hex';
-import { wanAddressChecksum } from '../../utils/wanAddressChecksum';
+import WanTools from '../../utils/wantools';
 
 export function submit(event, template) {
   event.preventDefault();
@@ -25,7 +25,7 @@ export function submit(event, template) {
     return false;
   }
 
-  const wanAddress = wanAddressChecksum(address);
+  const wanAddress = WanTools.addressChecksum(address);
 
   if (action === "verify") {
     Session.set('verifyAttempt', true);
