@@ -1,36 +1,56 @@
 import { Meteor } from 'meteor/meteor';
+import { HTTP } from 'meteor/http';
+
 import { ICOTokens } from '../api/collections/icotokens';
 import Logger from '../utils/logger';
 
+const TOKEN_QUERY = {
+  verified: true,
+  explorersuccess: { $ne: true },
+  verifyUrl: { $exists: true, $ne: '' },
+};
+
 export function sendVerifiedICOs() {
-  _.each(ICOTokens.find({verified: true, explorersuccess: {$ne: true}}).fetch(), function (e) {
+  const tokens = ICOTokens.find(TOKEN_QUERY).fetch();
 
-    Fiber(function () {
-      Logger.log('sending ping to explorer for ', e._id);
-      sleep(3000);
-      Meteor.call('sendTokenToExplorer', e._id, function (err, resp) {
-        var thestatus = resp.content.split('<dd>')[1].split('</dd>')[0];
+  tokens.reduce(reducer, Promise.resolve()).then(results => {
 
-        Logger.log('the status', thestatus)
-        Fiber(function () {
-          //TickerStats.remove({'_id':'LTC'});
+  }).catch(err => {
+    Logger.log('Error processing verified ICOs', err);
+  });
+}
 
-          //sleep(2000);
-          //TickerStats.insert({'_id':'LTC'})
-          //ICOTokens.update({'_id': contractAddress}, {$set: {verifyattempt: true, verified: true}})
-          sleep(3000);
-          if (thestatus === 'SUCCESS') {
-            Logger.log('good request')
-            ICOTokens.update({'_id': e._id}, {$set: {explorersuccess: true}})
-          } else {
-            Logger.log('bad request')
-            ICOTokens.update({'_id': e._id}, {$set: {explorersuccess: false}})
-          }
+function reducer(promiseChain, token) {
+  const next = chainResults => {
+    return handleRequest(token).then(currentResult => {
+      return [ ...chainResults, currentResult ];
+    }).catch(err => {
+      Logger.log('Error posting verified ICO to explorer', err);
+    });
+  }
 
-        }).run()
+  return promiseChain.then(next);
+}
 
+function handleRequest(token) {
+  return new Promise((resolve, reject) => {
+    Logger.log('sending ping to explorer for ', token._id);
 
-      })
-    }).run()
-  })
+    HTTP.get(token.verifyUrl, (err, res) => {
+      if (err) {
+        console.log(err);
+        return reject(err);
+      }
+
+      // FIXME: find the status in a better way
+      const status = res.content.split('<dd>')[1].split('</dd>')[0];
+      const success = status === 'SUCCESS';
+
+      Logger.log('ping status', status);
+
+      ICOTokens.update({ _id: token._id }, { $set: { explorersuccess: success }});
+
+      resolve();
+    });
+  });
 }
