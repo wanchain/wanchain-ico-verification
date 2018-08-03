@@ -4,7 +4,7 @@ import { Session } from 'meteor/session';
 
 import { ICOTokens } from '../../api/collections/icotokens';
 import StandardAbi from '../../standard-abi';
-import getSwal from '../swal';
+import getSwal from '../utils/swal';
 
 export default function(event, template) {
   Session.set('loading', false);

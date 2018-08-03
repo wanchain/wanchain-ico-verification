@@ -1,5 +1,5 @@
 import { ICOTokens } from '../../api/collections/icotokens';
-import getSwal from '../swal';
+import getSwal from '../utils/swal';
 
 export default function(event, template) {
   event.preventDefault();

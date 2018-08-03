@@ -1,6 +1,6 @@
 import { ICOTokens } from '../../api/collections/icotokens';
 import { saveFile } from '../utils/saveFile';
-import getSwal from '../swal';
+import getSwal from '../utils/swal';
 
 const ValidImageTypes = ['image/jpeg', 'image/png', 'image/jpg'];
 

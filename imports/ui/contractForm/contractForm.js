@@ -2,7 +2,7 @@ import { Template } from 'meteor/templating';
 import { Session } from 'meteor/session';
 
 import { ICOTokens } from '../../api/collections/icotokens';
-import getSwal from '../swal';
+import getSwal from '../utils/swal';
 
 import './contractForm.html';
 
