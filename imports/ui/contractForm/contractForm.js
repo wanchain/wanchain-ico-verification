@@ -89,19 +89,17 @@ Template.contractForm.events({
       $set: { abi, solidity, optimized }
     });
 
-    console.log('token update', updateToken);
-
     $('#myTab a[href="#settings"]').tab('show');
 
     Session.set('creatingTar', true);
 
     Meteor.call('verifyContractCode', address, network, function(err, res) {
+      Session.set('creatingTar', false);
+
       if (err) {
         console.log(err);
         return;
       }
-
-      Session.set('creatingTar', false);
 
       Meteor.call('setVerifyUrl', address, network, function(err, verifyUrl) {
         if (err) {
