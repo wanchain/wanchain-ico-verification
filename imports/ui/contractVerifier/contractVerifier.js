@@ -39,7 +39,7 @@ Template.contractVerifier.events({
     const addr = Session.get('contractAddress');
     const network = Session.get('network');
 
-    Meteor.call('pingExplorer', addr, network, function(err, resp) {
+    Meteor.call('sendTokenToExplorer', addr, network, function(err, resp) {
       console.log(err, resp);
     })
   },
