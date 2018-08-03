@@ -5,7 +5,7 @@
  * @return {Boolean} a boolean if it is or is not hex prefixed
  * @throws if the str input is not a string
  */
-export function isHexPrefixed(str) {
+function isHexPrefixed(str) {
   if (typeof str !== 'string') {
     throw new Error("[is-hex-prefixed] value must be type 'string', is currently type " + (typeof str) + ", while checking isHexPrefixed.");
   }
@@ -19,10 +19,15 @@ export function isHexPrefixed(str) {
  * @param {String} str the string value
  * @return {String|Optional} a string by pass if necessary
  */
-export function stripHexPrefix(str) {
+function stripHexPrefix(str) {
   if (typeof str !== 'string') {
     return str;
   }
 
   return isHexPrefixed(str) ? str.slice(2) : str;
 }
+
+export default Hex = {
+  isHexPrefixed,
+  stripHexPrefix,
+};

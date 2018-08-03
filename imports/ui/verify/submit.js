@@ -1,6 +1,6 @@
 import { Session } from 'meteor/session';
 
-import { stripHexPrefix } from '../../utils/hex';
+import Hex from '../../utils/hex';
 import { wanAddressChecksum } from '../../utils/wanAddressChecksum';
 
 export function submit(event, template) {
@@ -9,7 +9,7 @@ export function submit(event, template) {
   const address = $(event.target).find('[name="address"]').val();
   const action = $(event.target).find('button').attr('action');
 
-  const hash = stripHexPrefix(address);
+  const hash = Hex.stripHexPrefix(address);
 
   if (! address) {
     alert('You must enter an address!');
