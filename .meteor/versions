@@ -2,7 +2,6 @@ accounts-base@1.4.2
 accounts-password@1.5.1
 alexwine:bootstrap-4@4.1.0
 allow-deny@1.1.0
-augustnagro:random-word@1.0.0
 autoupdate@1.4.1
 babel-compiler@7.1.1
 babel-runtime@1.2.2
@@ -65,7 +64,6 @@ mongo-dev-server@1.1.0
 mongo-id@1.0.7
 npm-bcrypt@0.9.3
 npm-mongo@3.0.11
-numeral:numeral@1.5.3_1
 observe-sequence@1.0.16
 ordered-dict@1.1.0
 percolate:synced-cron@1.3.2

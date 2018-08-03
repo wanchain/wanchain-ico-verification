@@ -31,8 +31,6 @@ alexwine:bootstrap-4
 silentcicero:solc
 cfs:http-methods@0.0.30
 accounts-password@1.5.1
-numeral:numeral
-augustnagro:random-word
 percolate:synced-cron
 underscore
 useraccounts:bootstrap

@@ -1,9 +1,17 @@
 import { Meteor } from 'meteor/meteor';
 import { Match } from 'meteor/check';
 import { Accounts } from 'meteor/accounts-base';
-import { RandomWord } from 'meteor/augustnagro:random-word';
+import { Random } from 'meteor/random'
+import randomWord from 'random-word';
 
 import Crypto from '../../utils/crypto';
+
+const SYMBOLS = [ '/', '+', '-', '_' ];
+
+function newPassword() {
+  const sym = Random.choice(SYMBOLS);
+  return `${randomWord()}${sym}${randomWord()}`;
+}
 
 export function addUser(userData) {
   if (! Match.test(userData, Object)) {
@@ -12,7 +20,7 @@ export function addUser(userData) {
 
   const key = Meteor.settings.env.password;
 
-  userData.password = RandomWord.get() + RandomWord.get();
+  userData.password = newPassword();
   userData.profile.password = Crypto.encrypt(userData.password, key);
 
   // returns user id
