@@ -1,9 +1,15 @@
 import { Meteor } from 'meteor/meteor';
+import { Match } from 'meteor/check';
 
 import { ICOTokens } from '../collections/icotokens';
 import { encrypt } from '../../utils/crypto';
 
 export function setVerifyUrl(address) {
+  if (! address || ! Match.test(address, String)) {
+    console.log('Error in setVerifyUrl: address bad format', address);
+    return false;
+  }
+
   const {
     password,
     explorerApiUrl,
