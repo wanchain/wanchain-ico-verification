@@ -1,5 +1,6 @@
 export default Logger = {
-  log(msg) {
-    console.log(msg);
+  log() {
+    const args = Array.from(arguments);
+    console.log(...args);
   }
 }
