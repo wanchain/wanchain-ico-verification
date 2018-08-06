@@ -13,6 +13,9 @@ export function validateContract(address, network) {
 
   const web3 = instantiateWeb3(network);
 
+  // enforce that records are saved with lowercase address
+  address = address.toLowerCase();
+
   return new Promise(function(resolve, reject) {
     web3.eth.getCode(address.toUpperCase()).catch(err => {
       Logger.log('Error getting code from address:', address, network, err);

@@ -9,12 +9,15 @@ import swal from '../utils/swal';
 export default function(event, template) {
   Session.set('loading', false);
 
-  const address = $('.address').val().split('.')[0];
+  const addrField = $('.address').val().split('.')[0];
 
-  if (! address) {
+  if (! addrField) {
     alert('You must enter a valid contract address!')
     return;
   }
+
+  // enforce address is lowercase
+  const address = addrField.toLowerCase();
 
   Session.set('contractAddress', address);
   Session.set('loading', {

@@ -64,7 +64,7 @@ Template.contractVerifier.onCreated(function() {
   const address = params.a;
 
   if (address) {
-    Session.set('contractAddress', address);
+    Session.set('contractAddress', address.toLowerCase());
   }
 });
 
