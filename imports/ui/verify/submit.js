@@ -10,7 +10,7 @@ export function submit(event, template) {
   const address = $(event.target).find('[name="address"]').val();
   const action = $(event.target).find('button').attr('action');
 
-  const hash = Hex.stripHexPrefix(address);
+  const hash = Hex.stripHexPrefix(address).replace(/[^A-Fa-f0-9]/g, "");
 
   if (! address) {
     alert('You must enter an address!');
@@ -18,7 +18,7 @@ export function submit(event, template) {
   }
   else if (hash.length !== 40) {
     swal({
-      title: 'Invalid Address Length',
+      title: 'Invalid Address',
       text: 'The address you entered is not valid.',
       button: 'Try Again',
     });
