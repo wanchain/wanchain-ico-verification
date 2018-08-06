@@ -16,8 +16,11 @@ export function setVerifyUrl(address) {
     explorerApiUrl,
   } = Meteor.settings.env;
 
+  const token = ICOTokens.findOne(address, { network: 1 });
+  const url = token.network === '1' ? explorerApiUrl.mainnet : explorerApiUrl.testnet;
+
   const encrypted = Crypto.encrypt(address, address.toLowerCase() + password);
-  const verifyUrl = `${explorerApiUrl}/verification/${address}/${encodeURIComponent(encrypted)}`;
+  const verifyUrl = `${url}/verification/${address}/${encodeURIComponent(encrypted)}`;
 
   ICOTokens.update({ _id: address }, {
     $set: { verifyUrl },

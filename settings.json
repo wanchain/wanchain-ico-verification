@@ -1,7 +1,10 @@
 {
   "env": {
     "password": "xxxxxxx",
-    "explorerApiUrl": "xxxxxxxxxx"
+    "explorerApiUrl": {
+      "mainnet": "xxxxxxx",
+      "testnet": "xxxxxxx"
+    }
   },
   "public": {
     "icoFilesUrl": "file:///home/jgoyette/uploads/",
