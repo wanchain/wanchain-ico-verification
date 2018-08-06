@@ -118,12 +118,15 @@
 
                 {{#if contract._id}}
                   {{#if creatingTar}}
+
                     <div class="jumbotron">
                       <div class="lead"><i class="fa fa-spin fa-spinner"></i>
                         Verifying Code...
                       </div>
                     </div>
+
                   {{else}}
+
                     <div class="success">
                       {{#if contract.verified}}
                         {{>tokenForm}}
@@ -142,10 +145,9 @@
                         {{/if}}
                       {{/if}}
                       {{#if contract.verified}}
-                        <div class="jumbotron">
-                          <h3 class="">Admin Resources
-                          </h3>
-                          {{#if currentUser.profile.admin}}
+                        {{#if currentUser.profile.admin}}
+                          <div class="jumbotron">
+                            <h3 class="">Admin Resources</h3>
                             <div class="lead">
                               Below is an endpoint example that will be hit to
                               pass this verification to the explorer.
@@ -183,10 +185,11 @@
                               save. Then click on the Token Contract Source Code tab and
                               click Verify and Publish.
                             </div>
-                          {{/if}}
-                        </div>
+                          </div>
+                        {{/if}}
                       {{/if}}
                     </div>
+
                   {{/if}}
                 {{/if}}
 
@@ -194,6 +197,7 @@
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>

@@ -39,8 +39,6 @@ Template.contractForm.events({
   },
 
   'change .upload'(ev) {
-    console.log(ev);
-
     const file = document.getElementById('solidityCode').files[0];
 
     if (! file) {
