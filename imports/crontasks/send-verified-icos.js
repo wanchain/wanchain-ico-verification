@@ -13,7 +13,7 @@ const TOKEN_QUERY = {
 export function sendVerifiedICOs() {
   const tokens = ICOTokens.find(TOKEN_QUERY).fetch();
 
-  tokens.reduce(reducer, Promise.resolve()).then(results => {
+  tokens.reduce(reducer, Promise.resolve([])).then(results => {
 
   }).catch(err => {
     Logger.log('Error processing verified ICOs', err);
