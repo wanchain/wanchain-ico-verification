@@ -17,7 +17,7 @@ export function setVerifyUrl(address) {
   } = Meteor.settings.env;
 
   const encrypted = Crypto.encrypt(address, address.toLowerCase() + password);
-  const verifyUrl = `${explorerApiUrl}/${address}/${encodeURIComponent(encrypted)}`;
+  const verifyUrl = `${explorerApiUrl}/verification/${address}/${encodeURIComponent(encrypted)}`;
 
   ICOTokens.update({ _id: address }, {
     $set: { verifyUrl },
