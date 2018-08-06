@@ -1,4 +1,4 @@
-import { Session } from 'meteor/session';
+import { Template } from 'meteor/templating';
 
 import Hex from '../../utils/hex';
 import WanTools from '../../utils/wantools';
@@ -26,22 +26,23 @@ export function submit(event, template) {
     return false;
   }
 
+  const instance = Template.instance();
   const wanAddress = WanTools.addressChecksum(address);
 
-  if (action === 'verify') {
-    Session.set('verifyAttempt', true);
+  if (action === 'convert') {
+    instance.state.set('verifyAttempt', false);
+    instance.state.set('verified', false);
+    instance.state.set('wanchainAddress', wanAddress);
+  }
+  else if (action === 'verify') {
+    instance.state.set('verifyAttempt', true);
 
-    if (Session.get('wanchainAddress') == wanAddress) {
-      Session.set('verified', true);
+    if (instance.state.get('wanchainAddress') == wanAddress) {
+      instance.state.set('verified', true);
     }
     else {
-      Session.set('verified', false);
-      Session.set('wanchainAddress', false);
+      instance.state.set('verified', false);
+      instance.state.set('wanchainAddress', false);
     }
-  }
-  else {
-    Session.set('verifyAttempt', false);
-    Session.set('verified', false);
-    Session.set('wanchainAddress', wanAddress);
   }
 }

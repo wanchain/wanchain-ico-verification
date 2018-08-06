@@ -1,39 +1,18 @@
-import { Session } from 'meteor/session';
+import { Template } from 'meteor/templating';
 import WanTools from '../../utils/wantools';
 
 export function changeAddress(event, template) {
-  Session.set('wanchainAddress', false);
-  Session.set('verified', false);
-  Session.set('verifyAttempt', false);
-
   const address = $(event.target).val();
-  const lower = address.toLowerCase();
-  const upper = address.toUpperCase();
+  const instance = Template.instance();
+  const wanchainAddress = WanTools.addressChecksum(address);
 
-  if (address === lower) {
-    console.log('is lower');
-  }
-  else if (address === upper) {
-    console.log('is upper');
+  instance.state.set('verifyAttempt', false);
+  instance.state.set('verified', false);
+
+  if (address.toLowerCase() == wanchainAddress.toLowerCase()) {
+    instance.state.set('wanchainAddress', wanchainAddress);
   } else {
-    const action = 'verify';
-    const wanchainAddress = WanTools.addressChecksum(address);
-
-    Session.set('verifyAttempt', true);
-
-    if (action === "verify") {
-      Session.set('verifyAttempt', true);
-      if (address == wanchainAddress) {
-        Session.set('verified', true);
-        Session.set('wanchainAddress', wanchainAddress);
-      } else {
-        Session.set('verified', false);
-        Session.set('wanchainAddress', false);
-      }
-    } else {
-      Session.set('verifyAttempt', false);
-      Session.set('verified', false);
-      Session.set('wanchainAddress', wanchainAddress);
-    }
+    instance.state.set('verifyAttempt', true);
+    instance.state.set('wanchainAddress', false);
   }
 }

@@ -1,4 +1,5 @@
 import { Template } from 'meteor/templating';
+import { ReactiveDict } from 'meteor/reactive-dict';
 import { changeAddress } from './changeAddress';
 import { submit } from './submit';
 
@@ -6,13 +7,13 @@ import './verify.html';
 
 Template.verify.helpers({
   verifyAttempt() {
-    return Session.get('verifyAttempt');
+    return Template.instance().state.get('verifyAttempt');
   },
   verified() {
-    return Session.get('verified');
+    return Template.instance().state.get('verified');
   },
   wanchainAddress() {
-    return Session.get('wanchainAddress');
+    return Template.instance().state.get('wanchainAddress');
   },
 });
 
@@ -23,14 +24,23 @@ Template.verify.events({
   'click .backup'(event, template) {
     event.preventDefault();
 
-    Session.set('wanchainAddress', false);
-    Session.set('verified', false);
-    Session.set('verifyAttempt', false);
+    const instance = Template.instance();
+
+    instance.state.set('wanchainAddress', false);
+    instance.state.set('verified', false);
+    instance.state.set('verifyAttempt', false);
   },
 });
 
 Template.verify.onCreated(function() {
 
+  this.state = new ReactiveDict();
+
+  this.state.setDefault({
+    wanchainAddress: false,
+    verifyAttempt: false,
+    verified: false,
+  });
 });
 
 Template.verify.onRendered(function() {
