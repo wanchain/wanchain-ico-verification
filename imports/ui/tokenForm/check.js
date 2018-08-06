@@ -17,7 +17,7 @@ export default function(event, template) {
   }
 
   // enforce address is lowercase
-  const address = addrField.toLowerCase();
+  const address = addrField.trim().toLowerCase();
 
   Session.set('contractAddress', address);
   Session.set('loading', {
