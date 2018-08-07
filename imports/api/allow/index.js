@@ -3,36 +3,28 @@ import { ToolConfig } from '../collections/toolconfig';
 
 ICOTokens.allow({
   insert(userId, doc) {
-    return userId;
-    // The user must be logged in and the document must be owned by the user.
-    // return userId && doc.owner === userId;
+    return !! userId;
   },
 
   update(userId, doc, fields, modifier) {
-    return userId;
-    // Can only change your own documents.
-    // return doc.owner === userId;
+    return !! userId;
   },
 
   remove(userId, doc) {
-    return userId;
-    // Can only remove your own documents.
-    // return doc.owner === userId;
+    return !! userId;
   },
-
-  // fetch: ['owner']
 });
 
 ToolConfig.allow({
   insert(userId, doc) {
-    return true;
+    return false;
   },
 
   update(userId, doc, fields, modifier) {
-    return true;
+    return false;
   },
 
   remove(userId, doc) {
-    return true;
+    return false;
   },
 });
