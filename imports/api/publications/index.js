@@ -4,11 +4,11 @@ import { ToolConfig } from '../collections/toolconfig';
 import { isAdmin } from '../../utils/users';
 
 Meteor.publish('tokens', function(address) {
-  if (address) {
-    return ICOTokens.find({ _id: address });
+  if (! this.userId || ! address) {
+    return [];
   }
 
-  return [];
+  return ICOTokens.find({ _id: address });
 });
 
 Meteor.publish('toolconf', function() {
