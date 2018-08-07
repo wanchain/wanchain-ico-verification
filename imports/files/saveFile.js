@@ -3,7 +3,7 @@ import path from 'path';
 import writeJsonFile from 'write-json-file';
 
 import { Meteor } from 'meteor/meteor';
-import { getFilesPath } from '../../imports/utils/filesPath';
+import getFilesPath from '../../imports/utils/filesPath';
 
 const saveFile = function(data, name) {
   const filesPath = getFilesPath();

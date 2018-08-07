@@ -3,7 +3,7 @@ import path from 'path';
 import archiver from 'archiver';
 
 import { ICOTokens } from '../api/collections/icotokens';
-import { getFilesPath } from '../utils/filesPath';
+import getFilesPath from '../utils/filesPath';
 
 export function createTar(address) {
 
