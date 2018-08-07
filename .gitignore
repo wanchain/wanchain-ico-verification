@@ -1,11 +1,6 @@
+.idea
+.uploads
 node_modules/
 private/
-notes.md
-.uploads
-.idea
-settings.json
-yarn-error.log
-python
-.idea/
-public/contracts/
 settings-dev.json
+yarn-error.log
