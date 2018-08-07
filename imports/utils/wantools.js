@@ -10,13 +10,14 @@ function addressChecksum(address) {
 
   const lower = Hex.stripHexPrefix(address).toLowerCase();
   const hash = web3.utils.sha3(address).toString('hex');
+
   // Fix web3 0.14.0 and 0.20.0 incompatibility
-  const lowerHash = Hex.stripHexPrefix(hash);
+  const hashNoPrefix = Hex.stripHexPrefix(hash);
 
   let checksum = '0x';
 
   for (let i = 0; i < lower.length; i++) {
-    if (parseInt(lowerHash[i], 16) < 8) {
+    if (parseInt(hashNoPrefix[i], 16) < 8) {
       checksum += lower[i].toUpperCase();
     } else {
       checksum += lower[i];
