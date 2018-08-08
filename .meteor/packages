@@ -27,5 +27,5 @@ session@1.1.7
 alexwine:bootstrap-4
 accounts-password@1.5.1
 percolate:synced-cron
-underscore
+underscore@1.0.10
 useraccounts:bootstrap
